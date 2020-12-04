@@ -1,0 +1,36 @@
+version: "3.8"
+
+networks:
+  brechodatati-network:
+    driver: bridge
+
+services:
+  brechodatati-api:
+    image: brechodatati-api-img
+    container_name: brechodatati-api-cont
+    environment:
+        - dbhost=brechodatati-db
+    build:
+        context: .
+    ports:
+        - "8000:80"     
+    networks:
+        - brechodatati-network
+    depends_on:
+        - brechodatati-db
+  brechodatati-db:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: brechodatati-sqlserver-cont     
+    ports:
+        - "1433:1433"
+    networks:
+        - brechodatati-network
+    environment:
+        SA_PASSWORD: "password"
+        ACCEPT_EULA: "Y"
+    volumes:
+        - sqlserver-volume:/var/opt/mssql
+
+
+volumes:
+    sqlserver-volume:
