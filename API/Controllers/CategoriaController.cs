@@ -14,7 +14,7 @@ namespace API.Controllers
         private readonly CategoriaRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public CategoriaController(CategoriaRepository repository, Uow.IUnitOfWork uow)
+        public CategoriaController(CategoriaRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -64,13 +64,14 @@ namespace API.Controllers
 
                 categoria.DataAtualizacao = DateTime.Now;
 
-                await _repository.Update(categoria);
+                _repository.Update(categoria);
                 await _uow.Commit();
 
                 return Ok(await Get(categoria.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -89,6 +90,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -99,13 +101,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
                 await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }

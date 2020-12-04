@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Models;
 using API.Repositories;
+using API.Uow;
 
 namespace API.Controllers
 {
@@ -12,10 +13,12 @@ namespace API.Controllers
     public class CondicaoController : ControllerBase
     {
         private readonly CondicaoRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public CondicaoController(CondicaoRepository repository)
+        public CondicaoController(CondicaoRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
+            _uow = uow;
         }
 
         // GET: api/Condicao
@@ -61,12 +64,14 @@ namespace API.Controllers
                     return BadRequest();
 
                 condicao.DataAtualizacao = DateTime.Now;
-                await _repository.Update(condicao);
+                _repository.Update(condicao);
+                await _uow.Commit();
 
                 return Ok(await Get(condicao.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -79,11 +84,13 @@ namespace API.Controllers
             try
             {
                 await _repository.Add(condicao);
+                await _uow.Commit();
 
                 return CreatedAtAction("Post", await Get(condicao.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -94,12 +101,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
+                await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }

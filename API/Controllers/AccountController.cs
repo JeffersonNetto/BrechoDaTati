@@ -1,5 +1,6 @@
 ﻿using API.Models;
 using API.Repositories;
+using API.Uow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly ClienteRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public AccountController(ClienteRepository repository)
+        public AccountController(ClienteRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
+            _uow = uow;
         }
 
         [HttpPost("login")]        
@@ -46,11 +49,13 @@ namespace API.Controllers
             try
             {
                 await _repository.Add(usuario);
+                await _uow.Commit();
 
                 return Ok(new Retorno<Cliente> { mensagem = "Cadastro realizado com sucesso", dados = usuario });
             }
             catch (System.Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(new Retorno<Usuario> { mensagem = ex.Message, dados = null });
             }
         }

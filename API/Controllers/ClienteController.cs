@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
+﻿using API.Models;
 using API.Repositories;
+using API.Uow;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -17,10 +13,12 @@ namespace API.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly ClienteRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public ClienteController(ClienteRepository repository)
+        public ClienteController(ClienteRepository repository, Uow.IUnitOfWork uow)
         {
             _repository = repository;
+            _uow = uow;
         }
 
         // GET: api/Cliente
@@ -69,12 +67,14 @@ namespace API.Controllers
                     return BadRequest();
 
                 cliente.DataAtualizacao = DateTime.Now;
-                await _repository.Update(cliente);
+                _repository.Update(cliente);
+                await _uow.Commit();
 
                 return Ok(await Get(cliente.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -88,11 +88,13 @@ namespace API.Controllers
             try
             {
                 await _repository.Add(cliente);
+                await _uow.Commit();
 
                 return CreatedAtAction("Post", await Get(cliente.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -104,12 +106,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
+                await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }

@@ -63,13 +63,14 @@ namespace API.Controllers
                     return BadRequest();
 
                 marca.DataAtualizacao = DateTime.Now;                
-                await _repository.Update(marca);
+                _repository.Update(marca);
                 await _uow.Commit();
 
                 return Ok(await Get(marca.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }                                  
         }
@@ -88,6 +89,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);                
             }            
         }
@@ -98,13 +100,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
                 await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);                
             }            
         }        

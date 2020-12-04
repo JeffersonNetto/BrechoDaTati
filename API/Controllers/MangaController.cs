@@ -1,5 +1,6 @@
 ﻿using API.Models;
 using API.Repositories;
+using API.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace API.Controllers
     public class MangaController : ControllerBase
     {
         private readonly MangaRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public MangaController(MangaRepository repository)
+        public MangaController(MangaRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
+            _uow = uow;
         }
 
         // GET: api/Manga
@@ -60,12 +63,14 @@ namespace API.Controllers
                     return BadRequest();
 
                 manga.DataAtualizacao = DateTime.Now;                
-                await _repository.Update(manga);
+                _repository.Update(manga);
+                await _uow.Commit();
 
                 return Ok(await Get(manga.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }                                  
         }
@@ -78,11 +83,13 @@ namespace API.Controllers
             try
             {
                 await _repository.Add(manga);
+                await _uow.Commit();
 
                 return CreatedAtAction("Post", await Get(manga.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);                
             }            
         }
@@ -93,12 +100,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
+                await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);                
             }            
         }        

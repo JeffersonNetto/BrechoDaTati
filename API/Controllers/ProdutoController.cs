@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
+﻿using API.Models;
 using API.Repositories;
+using API.Uow;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -16,10 +12,12 @@ namespace API.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly ProdutoRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public ProdutoController(ProdutoRepository repository)
+        public ProdutoController(ProdutoRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
+            _uow = uow;
         }
 
         // GET: api/Produto
@@ -65,12 +63,14 @@ namespace API.Controllers
                     return BadRequest();
 
                 produto.DataAtualizacao = DateTime.Now;
-                await _repository.Update(produto);
+                _repository.Update(produto);
+                await _uow.Commit();
 
                 return Ok(await Get(produto.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -83,11 +83,13 @@ namespace API.Controllers
             try
             {
                 await _repository.Add(produto);
+                await _uow.Commit();
 
                 return CreatedAtAction("Post", await Get(produto.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -98,12 +100,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
+                await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }        

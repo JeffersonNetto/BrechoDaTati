@@ -1,5 +1,6 @@
 ﻿using API.Models;
 using API.Repositories;
+using API.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace API.Controllers
     public class TecidoController : ControllerBase
     {
         private readonly TecidoRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public TecidoController(TecidoRepository repository)
+        public TecidoController(TecidoRepository repository, Uow.IUnitOfWork uow)
         {
             _repository = repository;
+            _uow = uow;
         }
 
         // GET: api/Tecido
@@ -60,12 +63,14 @@ namespace API.Controllers
                     return BadRequest();
 
                 tecido.DataAtualizacao = DateTime.Now;
-                await _repository.Update(tecido);
+                _repository.Update(tecido);
+                await _uow.Commit();
 
                 return Ok(await Get(tecido.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -78,11 +83,13 @@ namespace API.Controllers
             try
             {
                 await _repository.Add(tecido);
+                await _uow.Commit();
 
                 return CreatedAtAction("Post", await Get(tecido.Id));
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }
@@ -93,12 +100,14 @@ namespace API.Controllers
         {
             try
             {
-                await _repository.Remove(await _repository.GetById(id));
+                _repository.Remove(await _repository.GetById(id));
+                await _uow.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
+                await _uow.Rollback();
                 return BadRequest(ex);
             }
         }

@@ -50,7 +50,7 @@ namespace API.Tests
 
             mock.Setup(_ => _.Remove(It.IsAny<Marca>())).Returns(Task.CompletedTask).Verifiable();
 
-            await mock.Object.Remove(new Marca());
+            mock.Object.Remove(new Marca());
 
             mock.Verify();
         }
@@ -62,7 +62,7 @@ namespace API.Tests
 
             mock.Setup(_ => _.Update(It.IsAny<Marca>())).Returns(Task.CompletedTask).Verifiable();
 
-            await mock.Object.Update(new Marca());
+            mock.Object.Update(new Marca());
 
             mock.Verify();
         }
