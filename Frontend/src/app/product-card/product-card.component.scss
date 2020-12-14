@@ -39,3 +39,12 @@
   .fa-info-circle {
     color: #fb6340 !important;
   }
+
+  .fa-share-alt {
+    color:#11cdef !important;
+  }
+
+  div.row div.col a i.fas:hover {
+    transition: .3s ease;
+    font-size: xx-large;
+  }

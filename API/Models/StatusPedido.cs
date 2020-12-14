@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class Condicao
+    public partial class StatusPedido
     {
-        public Condicao()
+        public StatusPedido()
         {
-            Produto = new HashSet<Produto>();
+            Pedido = new HashSet<Pedido>();
         }
 
         [Key]
@@ -21,13 +21,10 @@ namespace API.Models
         [Required]
         [StringLength(50)]
         public string Descricao { get; set; }
-        public bool Ativo { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime DataCriacao { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? DataAtualizacao { get; set; }
+        [Required]
+        public bool? Ativo { get; set; }
 
-        [InverseProperty("Condicao")]
-        public virtual ICollection<Produto> Produto { get; set; }
+        [InverseProperty("Status")]
+        public virtual ICollection<Pedido> Pedido { get; set; }
     }
 }

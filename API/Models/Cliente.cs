@@ -11,6 +11,12 @@ namespace API.Models
 {
     public partial class Cliente
     {
+        public Cliente()
+        {
+            ClienteProdutoFavorito = new HashSet<ClienteProdutoFavorito>();
+            Pedido = new HashSet<Pedido>();
+        }
+
         [Key]
         public Guid Id { get; set; }
         [Required]
@@ -30,13 +36,17 @@ namespace API.Models
         public string Senha { get; set; }
         [StringLength(11)]
         public string Celular { get; set; }
-        [Required]
-        public bool Ativo { get; set; } = true;
+        public bool Ativo { get; set; }
         [Column(TypeName = "date")]
         public DateTime DataNascimento { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataCriacao { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DataAtualizacao { get; set; }
+
+        [InverseProperty("Cliente")]
+        public virtual ICollection<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }
+        [InverseProperty("Cliente")]
+        public virtual ICollection<Pedido> Pedido { get; set; }
     }
 }

@@ -9,25 +9,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class Marca
+    public partial class Cupom
     {
-        public Marca()
+        public Cupom()
         {
-            Produto = new HashSet<Produto>();
+            Pedido = new HashSet<Pedido>();
         }
 
         [Key]
-        public short Id { get; set; }
+        public int Id { get; set; }
         [Required]
-        [StringLength(100)]
-        public string Nome { get; set; }
-        public bool Ativo { get; set; }
+        [StringLength(50)]
+        public string Descricao { get; set; }
+        [Required]
+        public bool? Ativo { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime DataCriacao { get; set; }
+        public DateTime DataInicio { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime? DataAtualizacao { get; set; }
+        public DateTime DataFim { get; set; }
 
-        [InverseProperty("Marca")]
-        public virtual ICollection<Produto> Produto { get; set; }
+        [InverseProperty("Cupom")]
+        public virtual ICollection<Pedido> Pedido { get; set; }
     }
 }

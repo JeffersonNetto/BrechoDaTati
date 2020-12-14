@@ -21,10 +21,9 @@ namespace API.Models
         [Required]
         [StringLength(150)]
         public string Nome { get; set; }
-        [Required]
-        public bool Ativo { get; set; } = true;
+        public bool Ativo { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public DateTime DataCriacao { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DataAtualizacao { get; set; }
 

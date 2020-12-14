@@ -24,7 +24,17 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "[dbo].[ClienteProdutoFavorito]",
+         "ObjectType": 0
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "[dbo].[Condicao]",
+         "ObjectType": 0
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Cupom]",
          "ObjectType": 0
       },
       {
@@ -44,7 +54,22 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "[dbo].[Pedido]",
+         "ObjectType": 0
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PedidoItem]",
+         "ObjectType": 0
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "[dbo].[Produto]",
+         "ObjectType": 0
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[StatusPedido]",
          "ObjectType": 0
       },
       {

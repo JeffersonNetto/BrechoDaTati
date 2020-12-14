@@ -10,9 +10,20 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Models
 {
     [Index(nameof(CategoriaId), Name = "IX_Produto_CategoriaId")]
+    [Index(nameof(CondicaoId), Name = "IX_Produto_CondicaoId")]
+    [Index(nameof(MangaId), Name = "IX_Produto_MangaId")]
     [Index(nameof(MarcaId), Name = "IX_Produto_MarcaId")]
+    [Index(nameof(ModelagemId), Name = "IX_Produto_ModelagemId")]
+    [Index(nameof(TamanhoId), Name = "IX_Produto_TamanhoId")]
+    [Index(nameof(TecidoId), Name = "IX_Produto_TecidoId")]
     public partial class Produto
     {
+        public Produto()
+        {
+            ClienteProdutoFavorito = new HashSet<ClienteProdutoFavorito>();
+            PedidoItem = new HashSet<PedidoItem>();
+        }
+
         [Key]
         public Guid Id { get; set; }
         [Required]
@@ -26,26 +37,27 @@ namespace API.Models
         public decimal ValorCompra { get; set; }
         [Column(TypeName = "decimal(8, 2)")]
         public decimal ValorVenda { get; set; }
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal? ValorPromocional { get; set; }
         public int Estoque { get; set; }
-        [Required]
-        public bool Ativo { get; set; } = true;
+        public bool Ativo { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataCriacao { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DataAtualizacao { get; set; }
-        public short TamanhoId { get; set; }
         public short CondicaoId { get; set; }
-        public short? MangaId { get; set; }
-        public short? ModelagemId { get; set; }
-        public short? TecidoId { get; set; }
         [Required]
         [StringLength(20)]
         public string Cor { get; set; }
+        public short? MangaId { get; set; }
         [Required]
         [StringLength(200)]
         public string Medidas { get; set; }
+        public short? ModelagemId { get; set; }
         [StringLength(300)]
         public string Observacoes { get; set; }
+        public short TamanhoId { get; set; }
+        public short? TecidoId { get; set; }
 
         [ForeignKey(nameof(CategoriaId))]
         [InverseProperty("Produto")]
@@ -68,5 +80,9 @@ namespace API.Models
         [ForeignKey(nameof(TecidoId))]
         [InverseProperty("Produto")]
         public virtual Tecido Tecido { get; set; }
+        [InverseProperty("Produto")]
+        public virtual ICollection<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }
+        [InverseProperty("Produto")]
+        public virtual ICollection<PedidoItem> PedidoItem { get; set; }
     }
 }
