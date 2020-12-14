@@ -55,10 +55,10 @@ namespace API
             });
 
             string host = Configuration["dbhost"];
-            string conexao = Configuration.GetConnectionString("Conexao")?.Replace("localhost", host);
+            string conexao = Configuration.GetConnectionString("Conexao")?.Replace("localhost", host ?? "localhost");
 
-            //services.AddDbContext<Context>(options => options.UseSqlServer(conexao), ServiceLifetime.Scoped);
-            services.AddDbContext<Context>(options => options.UseInMemoryDatabase(databaseName: "BrechoDaTati"), ServiceLifetime.Scoped);
+            services.AddDbContext<Context>(options => options.UseSqlServer(conexao), ServiceLifetime.Scoped);
+            //services.AddDbContext<Context>(options => options.UseInMemoryDatabase(databaseName: "BrechoDaTati"), ServiceLifetime.Scoped);
 
             services.RegisterServices();
 
