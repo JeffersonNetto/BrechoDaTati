@@ -1,28 +1,39 @@
+import { Categoria } from "./Categoria"
+import { Condicao } from "./Condicao"
+import { Manga } from "./Manga"
+import { Marca } from "./Marca"
+import { Modelagem } from "./Modelagem"
+import { ProdutoImagem } from "./ProdutoImagem"
+import { Tamanho } from "./Tamanho"
+import { Tecido } from "./Tecido"
+
 export class Produto {
     Id!: string
     Nome!: string
-    Descricao: string | undefined
-    MarcaId: number | undefined
-    CategoriaId: number | undefined
+    Descricao: string | undefined = undefined    
+    Slug!: string
+    MarcaId: number | undefined = undefined
+    CategoriaId: number | undefined = undefined
     ValorCompra!: number
     ValorVenda!: number
+    ValorPromocional: number | undefined = undefined
     Estoque!: number
-    Ativo: boolean = true
+    Ativo!: boolean
     DataCriacao!: Date
-    DataAtualizacao: Date | undefined
     TamanhoId!: number
     CondicaoId!: number
-    MangaId: number | undefined
-    ModelagemId: number | undefined
-    TecidoId: number | undefined
+    MangaId: number | undefined = undefined
+    ModelagemId: number | undefined = undefined
+    TecidoId: number | undefined = undefined
     Cor!: string
     Medidas!: string
-    Observacoes: string | undefined
-    // Categoria: Categoria        
-    // Condicao: Condicao        
-    // Manga: Manga        
-    // Marca: Marca        
-    // Modelagem: Modelagem        
-    // Tamanho: Tamanho        
-    // Tecido: Tecido
+    Observacoes: string | undefined = undefined
+    Categoria: Categoria | undefined  = undefined
+    Condicao!: Condicao        
+    Manga: Manga | undefined  = undefined
+    Marca: Marca | undefined = undefined
+    Modelagem: Modelagem | undefined = undefined
+    Tamanho!: Tamanho
+    Tecido: Tecido | undefined = undefined
+    ProdutoImagem!: ProdutoImagem[]
 }

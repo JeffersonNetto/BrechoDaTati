@@ -23,8 +23,6 @@ namespace API.Models
         public DateTime DataCriacao { get; set; }
         public int? CupomId { get; set; }
         public short StatusId { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? DataAtualizacao { get; set; }
 
         [ForeignKey(nameof(ClienteId))]
         [InverseProperty("Pedido")]

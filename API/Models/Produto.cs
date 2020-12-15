@@ -22,6 +22,7 @@ namespace API.Models
         {
             ClienteProdutoFavorito = new HashSet<ClienteProdutoFavorito>();
             PedidoItem = new HashSet<PedidoItem>();
+            ProdutoImagem = new HashSet<ProdutoImagem>();
         }
 
         [Key]
@@ -31,6 +32,9 @@ namespace API.Models
         public string Nome { get; set; }
         [StringLength(500)]
         public string Descricao { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string Slug { get; set; }
         public short? MarcaId { get; set; }
         public short? CategoriaId { get; set; }
         [Column(TypeName = "decimal(8, 2)")]
@@ -43,8 +47,6 @@ namespace API.Models
         public bool Ativo { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataCriacao { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? DataAtualizacao { get; set; }
         public short CondicaoId { get; set; }
         [Required]
         [StringLength(20)]
@@ -84,5 +86,7 @@ namespace API.Models
         public virtual ICollection<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }
         [InverseProperty("Produto")]
         public virtual ICollection<PedidoItem> PedidoItem { get; set; }
+        [InverseProperty("Produto")]
+        public virtual ICollection<ProdutoImagem> ProdutoImagem { get; set; }
     }
 }

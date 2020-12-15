@@ -69,6 +69,11 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "[dbo].[ProdutoImagem]",
+         "ObjectType": 0
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "[dbo].[StatusPedido]",
          "ObjectType": 0
       },

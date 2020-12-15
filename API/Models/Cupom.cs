@@ -21,8 +21,7 @@ namespace API.Models
         [Required]
         [StringLength(50)]
         public string Descricao { get; set; }
-        [Required]
-        public bool? Ativo { get; set; }
+        public bool Ativo { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataInicio { get; set; }
         [Column(TypeName = "datetime")]

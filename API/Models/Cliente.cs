@@ -41,8 +41,6 @@ namespace API.Models
         public DateTime DataNascimento { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataCriacao { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? DataAtualizacao { get; set; }
 
         [InverseProperty("Cliente")]
         public virtual ICollection<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }

@@ -9,21 +9,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class StatusPedido
+    public partial class ProdutoImagem
     {
-        public StatusPedido()
-        {
-            Pedido = new HashSet<Pedido>();
-        }
-
         [Key]
-        public short Id { get; set; }
-        [Required]
         [StringLength(50)]
-        public string Descricao { get; set; }
-        public bool Ativo { get; set; }
+        public string NomeArquivo { get; set; }
+        public Guid ProdutoId { get; set; }
 
-        [InverseProperty("Status")]
-        public virtual ICollection<Pedido> Pedido { get; set; }
+        [ForeignKey(nameof(ProdutoId))]
+        [InverseProperty("ProdutoImagem")]
+        public virtual Produto Produto { get; set; }
     }
 }

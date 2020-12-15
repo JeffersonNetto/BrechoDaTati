@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Produto } from '../models/produto';
+//import { Produto } from '../models/Produto';
 
 @Component({
   selector: 'app-products',
@@ -8,7 +8,7 @@ import { Produto } from '../models/produto';
 })
 export class ProductsComponent implements OnInit {
 
-  produtos: Produto[] = [
+  produtos = [
     {
       Id: '123456789',
       Nome: 'Produto xxx',
@@ -26,8 +26,7 @@ export class ProductsComponent implements OnInit {
       TamanhoId: 1,
       ModelagemId:1,
       Ativo: true,
-      TecidoId: 1,
-      DataAtualizacao: new Date(),
+      TecidoId: 1,      
       Observacoes: 'teste teste'            
     },
     {
@@ -47,8 +46,7 @@ export class ProductsComponent implements OnInit {
       TamanhoId: 1,
       ModelagemId:1,
       Ativo: true,
-      TecidoId: 1,
-      DataAtualizacao: new Date(),
+      TecidoId: 1,      
       Observacoes: 'teste teste'            
     },
     {
@@ -68,8 +66,7 @@ export class ProductsComponent implements OnInit {
       TamanhoId: 1,
       ModelagemId:1,
       Ativo: true,
-      TecidoId: 1,
-      DataAtualizacao: new Date(),
+      TecidoId: 1,      
       Observacoes: 'teste teste'            
     },
     {
@@ -89,8 +86,7 @@ export class ProductsComponent implements OnInit {
       TamanhoId: 1,
       ModelagemId:1,
       Ativo: true,
-      TecidoId: 1,
-      DataAtualizacao: new Date(),
+      TecidoId: 1,      
       Observacoes: 'teste teste'            
     },
     {
@@ -110,8 +106,7 @@ export class ProductsComponent implements OnInit {
       TamanhoId: 1,
       ModelagemId:1,
       Ativo: true,
-      TecidoId: 1,
-      DataAtualizacao: new Date(),
+      TecidoId: 1,      
       Observacoes: 'teste teste'            
     },
   ];

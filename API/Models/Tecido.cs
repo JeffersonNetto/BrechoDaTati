@@ -24,8 +24,6 @@ namespace API.Models
         public bool Ativo { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataCriacao { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? DataAtualizacao { get; set; }
 
         [InverseProperty("Tecido")]
         public virtual ICollection<Produto> Produto { get; set; }

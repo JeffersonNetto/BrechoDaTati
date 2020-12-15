@@ -1,1 +1,70 @@
-<p>product works!</p>
+<main>
+  <div class="position-relative">
+    <!-- Hero for FREE version -->
+    <section class="section section-lg section-shaped">
+      <!-- Background circles -->
+      <div class="shape shape-style-1 shape-primary">
+        <span class="span-150"></span>
+        <span class="span-50"></span>
+        <span class="span-50"></span>
+        <span class="span-75"></span>
+        <span class="span-100"></span>
+        <span class="span-75"></span>
+        <span class="span-50"></span>
+        <span class="span-100"></span>
+        <span class="span-50"></span>
+        <span class="span-100"></span>
+      </div>
+      <!-- SVG separator -->
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+          xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </section>
+  </div>
+  <section class="section section-lg pt-lg-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 mb-4">
+          <div>
+            <img src="{{produto.ProdutoImagem[0].NomeArquivo}}" class="img-center img-fluid shadow shadow-lg--hover" />
+          </div>
+          <div class="row mt-2">
+            <div class="col-3" *ngFor="let imagem of produto.ProdutoImagem">
+              <img src="../../assets/produtos/{{imagem.NomeArquivo}}"
+                class="img-center img-fluid shadow shadow-lg--hover" width="150" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="display-4">{{ produto.Nome }}</div>
+          <div class="display-5 text-warning">{{ produto.ValorPromocional }}
+            <del class="text-muted">{{ produto.ValorVenda }}</del></div>
+          <div class="mt-2">
+            <button class="btn btn-icon btn-success" style="text-transform: none;">
+              <i class="fas fa-cart-plus mr-2"></i>
+              Adicionar ao carrinho
+            </button>
+          </div>
+          <div class="display-5">
+            <p class="text-muted text-center mt-5">Detalhes do produto</p>
+            <div class="mt-4">
+              <small><strong>Medidas: </strong>{{produto.Medidas}}</small>
+            </div>
+            <div *ngIf="produto.Marca.Nome">
+              <small><strong>Marca: </strong><span>{{produto.Marca.Nome}}</span></small>
+            </div>
+            <div>
+              <small><strong>Condição: </strong><span>{{produto.Condicao.Descricao}}</span></small>
+            </div>
+            <div>
+              <small><strong>Tamanho: </strong><span>{{produto.Tamanho.Descricao}}</span></small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
