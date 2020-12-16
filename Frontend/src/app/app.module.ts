@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,7 @@ import { CartComponent } from './cart/cart.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { ProductService } from './services/product.service';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginService } from './services/login.service';
 
 @NgModule({
   declarations: [
@@ -36,10 +37,12 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     NgbModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
-    ProductService
+    ProductService,
+    LoginService
   ],
   bootstrap: [AppComponent]
 })

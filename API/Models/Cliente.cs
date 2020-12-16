@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class Cliente
+    public partial class Cliente : Usuario
     {
         public Cliente()
         {
@@ -18,7 +18,7 @@ namespace API.Models
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         [StringLength(150)]
         public string Nome { get; set; }
@@ -30,17 +30,17 @@ namespace API.Models
         public string Cpf { get; set; }
         [Required]
         [StringLength(100)]
-        public string Email { get; set; }
+        public new string Email { get; set; }
         [Required]
         [StringLength(20)]
-        public string Senha { get; set; }
+        public new string Senha { get; set; }
         [StringLength(11)]
         public string Celular { get; set; }
-        public bool Ativo { get; set; }
+        public bool Ativo { get; set; } = true;
         [Column(TypeName = "date")]
         public DateTime DataNascimento { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime DataCriacao { get; set; }
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
 
         [InverseProperty("Cliente")]
         public virtual ICollection<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }

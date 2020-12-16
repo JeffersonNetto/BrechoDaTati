@@ -8,7 +8,13 @@ namespace API.Services
 {
     public static class TokenService
     {
-        public static string GenerateToken(Models.Cliente usuario)
+        enum TokenType
+        {
+            Access,
+            Refresh
+        }
+
+        public static string GenerateToken(Models.Cliente usuario, DateTime expires)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
@@ -21,7 +27,7 @@ namespace API.Services
                     new Claim(ClaimTypes.Email, usuario.Email),
                     //new Claim(ClaimTypes.Role, usuario.Tipo.ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddHours(6),
+                Expires = expires,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = "api.brechodatati.com",
                 Audience = "brechodatati.com"

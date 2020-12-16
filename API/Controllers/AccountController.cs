@@ -26,15 +26,16 @@ namespace API.Controllers
         {            
             try
             {                
-                var cliente = await _repository.GetByEmailSenha(usuario.Login, usuario.Senha);
+                var cliente = await _repository.GetByEmailSenha(usuario.Email, usuario.Senha);
 
                 if (cliente == null)
                     return NotFound(new Retorno<Usuario> { mensagem = "Usuário ou senha inválidos", dados = null });
 
-                usuario.Senha = null;               
-                usuario.Token = Services.TokenService.GenerateToken(cliente);
+                cliente.Senha = null;
+                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(8));
+                cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
 
-                return Ok(new Retorno<Usuario> { mensagem = "Login realizado com sucesso", dados = usuario });
+                return Ok(new Retorno<Cliente> { mensagem = "Login realizado com sucesso", dados = cliente });
             }
             catch (System.Exception ex)
             {

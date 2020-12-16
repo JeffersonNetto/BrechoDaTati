@@ -1,4 +1,6 @@
-export class Cliente {
+import { Usuario } from "./Usuario"
+
+export class Cliente extends Usuario {
     Id!: string
     Nome!: string
     Sobrenome!: string

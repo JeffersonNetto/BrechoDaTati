@@ -40,4 +40,8 @@ export class ProductComponent implements OnInit {
       );
     }
   }
+
+  DefinirImagemPrincipal(imagem: string) {
+    this.produto.ImagemPrincipal = imagem;
+  }
 }

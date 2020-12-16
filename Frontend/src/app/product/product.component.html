@@ -34,7 +34,7 @@
           <div class="row mt-2">
             <div class="col-3" *ngFor="let imagem of produto.ProdutoImagem">
               <img src="../../assets/img/theme/{{imagem.Imagem}}"
-                class="img-center img-fluid shadow shadow-lg--hover" width="150" />
+                class="img-center img-fluid shadow shadow-lg--hover" width="150" (click)="DefinirImagemPrincipal(imagem.Imagem)" />
             </div>
           </div>
         </div>
