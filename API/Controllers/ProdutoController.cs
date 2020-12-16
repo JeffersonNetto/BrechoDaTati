@@ -61,8 +61,7 @@ namespace API.Controllers
             {
                 if (id != produto.Id)
                     return BadRequest();
-
-                produto.DataAtualizacao = DateTime.Now;
+                
                 _repository.Update(produto);
                 await _uow.Commit();
 

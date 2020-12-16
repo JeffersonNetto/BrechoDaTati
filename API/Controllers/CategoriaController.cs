@@ -60,9 +60,7 @@ namespace API.Controllers
             try
             {
                 if (id != categoria.Id)
-                    return BadRequest();
-
-                categoria.DataAtualizacao = DateTime.Now;
+                    return BadRequest();               
 
                 _repository.Update(categoria);
                 await _uow.Commit();

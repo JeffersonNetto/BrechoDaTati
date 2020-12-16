@@ -10,30 +10,31 @@ import { Tecido } from "./Tecido"
 export class Produto {
     Id!: string
     Nome!: string
-    Descricao: string | undefined = undefined    
+    Descricao: string | undefined    
     Slug!: string
-    MarcaId: number | undefined = undefined
-    CategoriaId: number | undefined = undefined
+    ImagemPrincipal!: string
+    MarcaId: number | undefined
+    CategoriaId: number | undefined
     ValorCompra!: number
     ValorVenda!: number
-    ValorPromocional: number | undefined = undefined
+    ValorPromocional: number | undefined
     Estoque!: number
     Ativo!: boolean
     DataCriacao!: Date
     TamanhoId!: number
     CondicaoId!: number
-    MangaId: number | undefined = undefined
-    ModelagemId: number | undefined = undefined
-    TecidoId: number | undefined = undefined
+    MangaId: number | undefined
+    ModelagemId: number | undefined
+    TecidoId: number | undefined
     Cor!: string
     Medidas!: string
-    Observacoes: string | undefined = undefined
-    Categoria: Categoria | undefined  = undefined
+    Observacoes: string | undefined
+    Categoria: Categoria | undefined
     Condicao!: Condicao        
-    Manga: Manga | undefined  = undefined
-    Marca: Marca | undefined = undefined
-    Modelagem: Modelagem | undefined = undefined
+    Manga: Manga | undefined
+    Marca: Marca | undefined
+    Modelagem: Modelagem | undefined
     Tamanho!: Tamanho
-    Tecido: Tecido | undefined = undefined
+    Tecido: Tecido | undefined
     ProdutoImagem!: ProdutoImagem[]
 }

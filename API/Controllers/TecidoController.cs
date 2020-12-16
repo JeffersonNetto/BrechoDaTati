@@ -61,8 +61,7 @@ namespace API.Controllers
             {
                 if (id != tecido.Id)
                     return BadRequest();
-
-                tecido.DataAtualizacao = DateTime.Now;
+                
                 _repository.Update(tecido);
                 await _uow.Commit();
 

@@ -14,6 +14,8 @@ import { ProductsComponent } from './products/products.component';
 import { ProductComponent } from './product/product.component';
 import { CartComponent } from './cart/cart.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { ProductService } from './services/product.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,9 +35,12 @@ import { ProductCardComponent } from './product-card/product-card.component';
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    ProductService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

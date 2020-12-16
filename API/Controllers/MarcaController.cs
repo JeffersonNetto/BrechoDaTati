@@ -61,8 +61,7 @@ namespace API.Controllers
             {
                 if (id != marca.Id)
                     return BadRequest();
-
-                marca.DataAtualizacao = DateTime.Now;                
+                
                 _repository.Update(marca);
                 await _uow.Commit();
 

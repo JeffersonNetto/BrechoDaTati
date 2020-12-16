@@ -8,7 +8,7 @@ import { Produto } from '../models/Produto';
 })
 export class ProductCardComponent implements OnInit {
 
-  @Input() produto!: any;
+  @Input() produto!: Produto;
 
   constructor() { }
 

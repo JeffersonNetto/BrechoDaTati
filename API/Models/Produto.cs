@@ -35,6 +35,9 @@ namespace API.Models
         [Required]
         [StringLength(200)]
         public string Slug { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string ImagemPrincipal { get; set; }
         public short? MarcaId { get; set; }
         public short? CategoriaId { get; set; }
         [Column(TypeName = "decimal(8, 2)")]

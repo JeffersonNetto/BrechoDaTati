@@ -29,11 +29,11 @@
       <div class="row">
         <div class="col-lg-7 mb-4">
           <div>
-            <img src="{{produto.ProdutoImagem[0].NomeArquivo}}" class="img-center img-fluid shadow shadow-lg--hover" />
+            <img src="../../assets/img/theme/{{produto.ImagemPrincipal}}" class="img-center img-fluid shadow shadow-lg--hover" />
           </div>
           <div class="row mt-2">
             <div class="col-3" *ngFor="let imagem of produto.ProdutoImagem">
-              <img src="../../assets/produtos/{{imagem.NomeArquivo}}"
+              <img src="../../assets/img/theme/{{imagem.Imagem}}"
                 class="img-center img-fluid shadow shadow-lg--hover" width="150" />
             </div>
           </div>
@@ -53,7 +53,7 @@
             <div class="mt-4">
               <small><strong>Medidas: </strong>{{produto.Medidas}}</small>
             </div>
-            <div *ngIf="produto.Marca.Nome">
+            <div *ngIf="produto.Marca">
               <small><strong>Marca: </strong><span>{{produto.Marca.Nome}}</span></small>
             </div>
             <div>

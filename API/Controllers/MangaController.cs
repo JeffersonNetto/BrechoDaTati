@@ -61,8 +61,7 @@ namespace API.Controllers
             {
                 if (id != manga.Id)
                     return BadRequest();
-
-                manga.DataAtualizacao = DateTime.Now;                
+                
                 _repository.Update(manga);
                 await _uow.Commit();
 

@@ -1,42 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Produto } from '../models/Produto';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  styleUrls: ['./product.component.scss'],
 })
 export class ProductComponent implements OnInit {
+  produto!: Produto;
 
-  produto = {
-    Id: '123456',
-    Nome: 'Produto01',
-    Descricao: undefined,
-    Slug: 'produto01',
-    ValorCompra: 100,
-    ValorVenda: 199.90,
-    ValorPromocional: 149.90,
-    Estoque: 10,
-    Ativo: true,
-    DataCriacao: new Date(),
-    CondicaoId: 1,
-    Cor: 'Azul',        
-    Medidas: 'Medidas aqui testando algum texto que seja razoavelmente grande',
-    TamanhoId: 1,
-    Tamanho: {
-      Descricao: 'G'
-    },
-    Marca: {
-      Nome: 'Lezalez'
-    },
-    Condicao: {
-      Descricao: 'Usado'
-    }
-  };
-
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private router: Router) {
+    this.produto = this.router.getCurrentNavigation()?.extras?.state?.produto;    
   }
 
+  ngOnInit(): void {}
 }

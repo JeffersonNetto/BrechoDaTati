@@ -1,4 +1,4 @@
 export class ProdutoImagem {
-    NomeArquivo!: string
+    Imagem!: string
     ProdutoId!: string
 }

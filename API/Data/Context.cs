@@ -152,6 +152,8 @@ namespace API.Data
 
                 entity.Property(e => e.Descricao).IsUnicode(false);
 
+                entity.Property(e => e.ImagemPrincipal).IsUnicode(false);
+
                 entity.Property(e => e.Medidas).IsUnicode(false);
 
                 entity.Property(e => e.Nome).IsUnicode(false);
@@ -200,7 +202,7 @@ namespace API.Data
 
             modelBuilder.Entity<ProdutoImagem>(entity =>
             {
-                entity.Property(e => e.NomeArquivo).IsUnicode(false);
+                entity.Property(e => e.Imagem).IsUnicode(false);
 
                 entity.HasOne(d => d.Produto)
                     .WithMany(p => p.ProdutoImagem)

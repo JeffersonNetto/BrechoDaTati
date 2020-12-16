@@ -13,7 +13,7 @@ namespace API.Models
     {
         [Key]
         [StringLength(50)]
-        public string NomeArquivo { get; set; }
+        public string Imagem { get; set; }
         public Guid ProdutoId { get; set; }
 
         [ForeignKey(nameof(ProdutoId))]

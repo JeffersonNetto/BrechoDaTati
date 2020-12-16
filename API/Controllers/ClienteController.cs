@@ -65,8 +65,7 @@ namespace API.Controllers
             {
                 if (id != cliente.Id)
                     return BadRequest();
-
-                cliente.DataAtualizacao = DateTime.Now;
+                
                 _repository.Update(cliente);
                 await _uow.Commit();
 

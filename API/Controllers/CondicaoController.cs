@@ -62,8 +62,7 @@ namespace API.Controllers
             {
                 if (id != condicao.Id)
                     return BadRequest();
-
-                condicao.DataAtualizacao = DateTime.Now;
+                
                 _repository.Update(condicao);
                 await _uow.Commit();
 

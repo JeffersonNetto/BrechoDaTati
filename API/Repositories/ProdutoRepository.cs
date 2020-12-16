@@ -19,12 +19,26 @@ namespace API.Repositories
             _context.Produto
             .Include(_ => _.Marca)
             .Include(_ => _.Categoria)
+            .Include(_ => _.Tamanho)
+            .Include(_ => _.Manga)
+            .Include(_ => _.Condicao)
+            .Include(_ => _.Modelagem)
+            .Include(_ => _.Tecido)
+            .Include(_ => _.ProdutoImagem)
             .AsNoTracking()
             .ToListAsync();
 
         public override async Task<Produto> GetById<T>(T id) => 
             await
             _context.Produto
+            .Include(_ => _.Marca)
+            .Include(_ => _.Categoria)
+            .Include(_ => _.Tamanho)
+            .Include(_ => _.Manga)
+            .Include(_ => _.Condicao)
+            .Include(_ => _.Modelagem)
+            .Include(_ => _.Tecido)
+            .Include(_ => _.ProdutoImagem)
             .AsNoTracking()
             .SingleOrDefaultAsync(_ => _.Id.Equals(id));
     }
