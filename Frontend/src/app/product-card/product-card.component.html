@@ -21,7 +21,7 @@
         </div>
         <div class="row mt-4 display-4 text-center">
             <div class="col">
-                <a [routerLink]="['/produto']" [state]="{produto: produto}">
+                <a [routerLink]="['/produto', produto.Slug]" [state]="{produto: produto}">
                     <i class="fas fa-info-circle text-warning" title="Mais detalhes"></i>
                 </a>
             </div>

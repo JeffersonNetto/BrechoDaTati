@@ -41,5 +41,19 @@ namespace API.Repositories
             .Include(_ => _.ProdutoImagem)
             .AsNoTracking()
             .SingleOrDefaultAsync(_ => _.Id.Equals(id));
+
+        public async Task<Produto> GetBySlug(string slug) =>
+            await
+            _context.Produto
+            .Include(_ => _.Marca)
+            .Include(_ => _.Categoria)
+            .Include(_ => _.Tamanho)
+            .Include(_ => _.Manga)
+            .Include(_ => _.Condicao)
+            .Include(_ => _.Modelagem)
+            .Include(_ => _.Tecido)
+            .Include(_ => _.ProdutoImagem)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(_ => _.Slug == slug);
     }
 }

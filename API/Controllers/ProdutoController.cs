@@ -52,6 +52,22 @@ namespace API.Controllers
             }
         }
 
+        // GET: api/Produto/5        
+        [HttpGet("slug/{slug}")]
+        public async Task<ActionResult> Get(string slug)
+        {
+            try
+            {
+                var produto = await _repository.GetBySlug(slug);
+
+                return produto == null ? NotFound() : Ok(produto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         // PUT: api/Produto/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
