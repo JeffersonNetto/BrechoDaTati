@@ -1,11 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace API.Models
 {
-    public class Retorno<T>
+    public record Retorno<T>
     {
-        public string mensagem { get; set; }
-        public T dados { get; set; }
-        public List<string> erros { get; set; }
+        public Retorno(IList<FluentValidation.Results.ValidationFailure> validationFailure = null) =>
+            ConvertErrors(validationFailure);
+
+        public Retorno(string key)
+        {
+            if (key.Contains("uq_cpf"))
+                Erros.Add("O CPF informado já está cadastrado na base de dados");
+            else if (key.Contains("uq_email"))
+                Erros.Add("O e-mail informado já está cadastrado na base de dados");
+        }
+
+        public string Mensagem { get; init; }
+        public T Dados { get; init; }
+        public List<string> Erros { get; private init; } = new List<string>();
+
+        private void ConvertErrors(IList<FluentValidation.Results.ValidationFailure> validationFailure) =>
+            validationFailure?.ToList().ForEach(_ => Erros.Add(_.ErrorMessage));
     }
 }

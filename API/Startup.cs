@@ -1,5 +1,6 @@
 using API.Data;
 using API.IoC;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 
 namespace API
@@ -48,12 +50,13 @@ namespace API
                 };
             });
 
-            services.AddControllers().AddNewtonsoftJson(_ => 
+            services.AddControllers().AddNewtonsoftJson(_ =>
             {
                 _.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                 _.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                _.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();                
-            });
+                _.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            })
+            .AddFluentValidation();
 
             string host = Configuration["dbhost"];
             string conexao = Configuration.GetConnectionString("Conexao")?.Replace("localhost", host ?? "localhost");
@@ -95,7 +98,7 @@ namespace API
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();            
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,4 +1,5 @@
 ﻿using API.Repositories;
+using API.Validators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace API.IoC
@@ -15,6 +16,7 @@ namespace API.IoC
             services.AddScoped<ProdutoRepository>();
             services.AddScoped<ClienteRepository>();
             services.AddScoped<MangaRepository>();
+            services.AddScoped<ClienteValidator>();
         }
     }
 }

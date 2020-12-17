@@ -39,28 +39,58 @@ namespace API.Data
         {
             modelBuilder.Entity<Categoria>(entity =>
             {
-                entity.Property(e => e.Nome).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Cliente>(entity =>
             {
+                entity.HasIndex(e => e.Cpf, "UQ_Cpf")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Email, "UQ_Email")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Celular)
+                    .HasMaxLength(11)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Cpf)
+                    .IsRequired()
+                    .HasMaxLength(11)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Email).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
-                entity.Property(e => e.Nome).IsUnicode(false);
+                entity.Property(e => e.DataNascimento).HasColumnType("date");
 
-                entity.Property(e => e.Senha).IsUnicode(false);
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Sobrenome).IsUnicode(false);
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Senha)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Sobrenome)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<ClienteProdutoFavorito>(entity =>
@@ -82,32 +112,61 @@ namespace API.Data
 
             modelBuilder.Entity<Condicao>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Cupom>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.DataFim).HasColumnType("datetime");
+
+                entity.Property(e => e.DataInicio).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Manga>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Marca>(entity =>
             {
-                entity.Property(e => e.Nome).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Modelagem>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Pedido>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Cliente)
                     .WithMany(p => p.Pedido)
@@ -131,6 +190,10 @@ namespace API.Data
             {
                 entity.HasKey(e => new { e.PedidoId, e.ProdutoId });
 
+                entity.Property(e => e.ValorUnitario).HasColumnType("decimal(8, 2)");
+
+                entity.Property(e => e.ValorUnitarioPago).HasColumnType("decimal(8, 2)");
+
                 entity.HasOne(d => d.Pedido)
                     .WithMany(p => p.PedidoItem)
                     .HasForeignKey(d => d.PedidoId)
@@ -146,21 +209,65 @@ namespace API.Data
 
             modelBuilder.Entity<Produto>(entity =>
             {
+                entity.HasIndex(e => e.CategoriaId, "IX_Produto_CategoriaId");
+
+                entity.HasIndex(e => e.CondicaoId, "IX_Produto_CondicaoId");
+
+                entity.HasIndex(e => e.MangaId, "IX_Produto_MangaId");
+
+                entity.HasIndex(e => e.MarcaId, "IX_Produto_MarcaId");
+
+                entity.HasIndex(e => e.ModelagemId, "IX_Produto_ModelagemId");
+
+                entity.HasIndex(e => e.TamanhoId, "IX_Produto_TamanhoId");
+
+                entity.HasIndex(e => e.TecidoId, "IX_Produto_TecidoId");
+
+                entity.HasIndex(e => e.Slug, "UQ_Slug")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Cor).IsUnicode(false);
+                entity.Property(e => e.Cor)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
-                entity.Property(e => e.ImagemPrincipal).IsUnicode(false);
+                entity.Property(e => e.Descricao)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Medidas).IsUnicode(false);
+                entity.Property(e => e.ImagemPrincipal)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Nome).IsUnicode(false);
+                entity.Property(e => e.Medidas)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Observacoes).IsUnicode(false);
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Slug).IsUnicode(false);
+                entity.Property(e => e.Observacoes)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Slug)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ValorCompra).HasColumnType("decimal(8, 2)");
+
+                entity.Property(e => e.ValorPromocional).HasColumnType("decimal(8, 2)");
+
+                entity.Property(e => e.ValorVenda).HasColumnType("decimal(8, 2)");
 
                 entity.HasOne(d => d.Categoria)
                     .WithMany(p => p.Produto)
@@ -202,7 +309,11 @@ namespace API.Data
 
             modelBuilder.Entity<ProdutoImagem>(entity =>
             {
-                entity.Property(e => e.Imagem).IsUnicode(false);
+                entity.HasKey(e => e.Imagem);
+
+                entity.Property(e => e.Imagem)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Produto)
                     .WithMany(p => p.ProdutoImagem)
@@ -213,17 +324,33 @@ namespace API.Data
 
             modelBuilder.Entity<StatusPedido>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Tamanho>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.HasIndex(e => e.Descricao, "UQ__Tamanho__008BA9EF2E2004D4")
+                    .IsUnique();
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Tecido>(entity =>
             {
-                entity.Property(e => e.Descricao).IsUnicode(false);
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
