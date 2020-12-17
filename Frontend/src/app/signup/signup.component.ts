@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { Cliente } from '../models/Cliente';
+import { Retorno } from '../models/Retorno';
 import { RegisterService } from '../services/register.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class SignupComponent implements OnInit {
   alertMessage: string | undefined;
   forcaDaSenha: string | undefined;
   success: boolean | undefined;
+  retorno!: Retorno<Cliente>
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,33 +82,28 @@ export class SignupComponent implements OnInit {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.registerForm.invalid) {
-      return;
-    }
+    // if (this.registerForm.invalid) {
+    //   return;
+    // }
 
     this.loading = true;
 
     this.cliente = Object.assign({}, this.cliente, this.registerForm.value);
-
-    console.log(this.cliente)
-
-    console.log(this.registerForm.value)
-    console.log(this.cliente.DataNascimento)
-
+    
     this.registerService
       .Register(this.cliente)
       .pipe(first())
       .subscribe(
-        (success: any) => {
-          console.log(success);
-          this.alertMessage = success.mensagem;
+        (success) => {
+          this.retorno = success;                    
+          this.alertMessage = this.retorno.Mensagem
           this.showAlert = true;
           this.success = true;
           this.loading = false;
         },
         (err) => {
-          console.warn(err);
-          this.alertMessage = err.error?.mensagem || err.error?.title;
+          this.retorno = err.error
+          this.alertMessage = this.retorno.Mensagem
           this.showAlert = true;
           this.success = false;
           this.loading = false;

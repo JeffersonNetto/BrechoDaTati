@@ -8,11 +8,11 @@ namespace API.Models
         public Retorno(IList<FluentValidation.Results.ValidationFailure> validationFailure = null) =>
             ConvertErrors(validationFailure);
 
-        public Retorno(string key)
+        public Retorno(string errorMessage)
         {
-            if (key.Contains("uq_cpf"))
+            if (errorMessage.ToLower().Contains("uq_cpf"))
                 Erros.Add("O CPF informado já está cadastrado na base de dados");
-            else if (key.Contains("uq_email"))
+            else if (errorMessage.ToLower().Contains("uq_email"))
                 Erros.Add("O e-mail informado já está cadastrado na base de dados");
         }
 

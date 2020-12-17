@@ -41,7 +41,7 @@ namespace API.Controllers
             }
             catch (System.Exception ex)
             {
-                return BadRequest(new Retorno<Usuario> { Mensagem = ex.Message, Dados = null });
+                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message) { Mensagem = "Ocorreu um erro", Dados = null });
             }
         }
 
@@ -65,7 +65,7 @@ namespace API.Controllers
             {
                 await _uow.Rollback();
 
-                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message.ToLower()) { Mensagem = null, Dados = null });
+                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message) { Mensagem = "Ocorreu um erro", Dados = null });
             }
         }
     }

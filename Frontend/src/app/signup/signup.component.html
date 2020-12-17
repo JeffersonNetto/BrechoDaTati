@@ -153,12 +153,15 @@
                     </div>
                   </div>
                 </div>
-                <div class="alert mt-3" [ngClass]="{'alert-danger': !success, 'alert-success': success}" role="alert" *ngIf="showAlert">
-                  <span>{{alertMessage}}</span>
+                <div class="alert mt-3 pb-1" [ngClass]="{'alert-danger': !success, 'alert-success': success}" role="alert" *ngIf="showAlert">
+                  <div>{{alertMessage}}</div>
+                  <ul *ngFor="let erro of retorno.Erros">                    
+                    <li>{{erro}}</li>
+                  </ul>
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary"
-                    [ngClass]="{'my-2': showAlert, 'my-4': !showAlert}" [disabled]="!termos">Criar nova
+                    [ngClass]="{'my-2': showAlert, 'my-4': !showAlert}" [disabled]="!termos || !registerForm.valid">Criar nova
                     conta</button>
                 </div>
                 <div class="text-primary text-center display-4" *ngIf="loading">     

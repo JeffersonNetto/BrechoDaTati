@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Cliente } from '../models/Cliente';
+import { Retorno } from '../models/Retorno';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class RegisterService {
 
   public Register(cliente: Cliente) {
     return this.http
-      .post<Cliente>(`${environment.API}account/register`, cliente)
+      .post<Retorno<Cliente>>(`${environment.API}account/register`, cliente)
       .pipe(first());
   }
 }
