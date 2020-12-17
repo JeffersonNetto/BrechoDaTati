@@ -19,25 +19,25 @@ namespace API.Models
 
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        [Required]
+        [Required(ErrorMessage = "Informe o nome")]
         [StringLength(150)]
         public string Nome { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Informe o sobrenome")]
         [StringLength(150)]
         public string Sobrenome { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Informe o CPF")]
         [StringLength(11)]
         public string Cpf { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Informe o e-mail")]
         [StringLength(100)]
         public new string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Informe a senha")]
         [StringLength(20)]
         public new string Senha { get; set; }
         [StringLength(11)]
         public string Celular { get; set; }
         public bool Ativo { get; set; } = true;
-        [Column(TypeName = "date")]
+        [Column(TypeName = "date")]        
         public DateTime DataNascimento { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DataCriacao { get; set; } = DateTime.Now;

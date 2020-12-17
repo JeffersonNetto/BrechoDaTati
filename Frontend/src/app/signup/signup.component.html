@@ -38,7 +38,7 @@
                 <small>Ou preencha as informações abaixo</small>
               </div>
               <form role="form" [formGroup]="registerForm" (ngSubmit)="Cadastrar()">
-                <div class="form-group" [ngClass]="{'focused':focus===true, 'has-danger': submitted && cliente?.Nome?.length < 3}">
+                <div class="form-group" [ngClass]="{'focused':focus===true}">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -46,10 +46,15 @@
                     <input formControlName="Nome" maxlength="150" class="form-control" placeholder="Nome" type="text"
                       (focus)="focus=true" (blur)="focus=false">
                   </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Nome.errors?.required">Informe seu nome</small>
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Nome.errors?.minlength">O nome precisa ter pelo
+                      menos 2 dígitos</small>
+                  </div>
                 </div>
-
-                <div class="form-group"
-                  [ngClass]="{'focused':focus===true, 'has-danger': submitted && !cliente?.Sobrenome}">
+                <div class="form-group" [ngClass]="{'focused':focus===true}">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -57,8 +62,16 @@
                     <input formControlName="Sobrenome" maxlength="150" class="form-control" placeholder="Sobrenome"
                       type="text" (focus)="focus=true" (blur)="focus=false">
                   </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Sobrenome.errors?.required">Informe seu
+                      sobrenome</small>
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Sobrenome.errors?.minlength">O sobrenome precisa
+                      ter pelo menos 2 dígitos</small>
+                  </div>
                 </div>
-                <div class="form-group" [ngClass]="{'focused':focus===true, 'has-danger': submitted && !cliente?.Cpf}">
+                <div class="form-group" [ngClass]="{'focused':focus===true}">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-id-card"></i></span>
@@ -66,19 +79,28 @@
                     <input formControlName="Cpf" maxlength="11" class="form-control" placeholder="CPF" type="text"
                       (focus)="focus=true" (blur)="focus=false">
                   </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Cpf.errors?.required">Informe seu CPF</small>
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Cpf.errors?.minlength">O CPF precisa ter 11
+                      dígitos</small>
+                  </div>
                 </div>
-                <div class="form-group"
-                  [ngClass]="{'focused':focus===true, 'has-danger': submitted && !cliente?.DataNascimento}">
+                <div class="form-group" [ngClass]="{'focused':focus===true}">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                     </div>
-                    <input formControlName="DataNascimento" maxlength="10" class="form-control"
-                      placeholder="Data de nascimento" type="text" (focus)="focus=true" (blur)="focus=false">
+                    <input formControlName="DataNascimento" type="date" max="9999-12-31" lang="pt-BR" class="form-control"
+                      placeholder="Data de nascimento" (focus)="focus=true" (blur)="focus=false">
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.DataNascimento.errors?.required">Informe sua data
+                      de nascimento</small>
                   </div>
                 </div>
-                <div class="form-group"
-                  [ngClass]="{'focused':focus1===true, 'has-danger': submitted && !cliente?.Email}">
+                <div class="form-group" [ngClass]="{'focused':focus1===true}">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-at"></i></span>
@@ -86,20 +108,36 @@
                     <input formControlName="Email" maxlength="100" class="form-control" placeholder="E-mail"
                       type="email" (focus)="focus1=true" (blur)="focus1=false">
                   </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Email.errors?.required">Informe o seu
+                      e-mail</small>
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Email.errors?.email">Informe um endereço de e-mail
+                      válido</small>
+                  </div>
                 </div>
-                <div class="form-group"
-                  [ngClass]="{'focused':focus2===true, 'has-danger': submitted && !cliente?.Senha}">
+                <div class="form-group" [ngClass]="{'focused':focus2===true}">
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
                     <input formControlName="Senha" maxlength="20" class="form-control" placeholder="Senha"
-                      type="password" (focus)="focus2=true" (blur)="focus2=false">
+                      type="password" (focus)="focus2=true" (blur)="focus2=false" (keyup)="VerificarForcaDaSenha()">
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Senha.errors?.required">Informe a sua senha</small>
+                  </div>
+                  <div>
+                    <small class="text-danger" *ngIf="submitted && f.Senha.errors?.minlength">A senha precisa ter pelo
+                      menos 6 caracteres</small>
                   </div>
                 </div>
                 <div class="text-muted font-italic">
                   <small>força da senha:
-                    <span class="text-success font-weight-700">forte</span>
+                    <span
+                      [ngClass]="{'text-danger': forcaDaSenha === 'Muito Fraca' || forcaDaSenha === 'Fraca', 'text-warning': forcaDaSenha === 'Média', 'text-success': forcaDaSenha === 'Forte'}"
+                      class="font-weight-700">{{forcaDaSenha}}</span>
                   </small>
                 </div>
                 <div class="row my-4">
@@ -115,11 +153,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="alert alert-danger" role="alert">
-                  <strong>Danger!</strong> This is a danger alert—check it out!
+                <div class="alert mt-3" [ngClass]="{'alert-danger': !success, 'alert-success': success}" role="alert" *ngIf="showAlert">
+                  <span>{{alertMessage}}</span>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary mt-4" [disabled]="!termos">Criar nova conta</button>
+                  <button type="submit" class="btn btn-primary"
+                    [ngClass]="{'my-2': showAlert, 'my-4': !showAlert}" [disabled]="!termos">Criar nova
+                    conta</button>
+                </div>
+                <div class="text-primary text-center display-4" *ngIf="loading">     
+                  <i class="fas fa-spinner fa-spin"></i>             
                 </div>
               </form>
             </div>

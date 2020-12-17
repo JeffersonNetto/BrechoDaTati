@@ -56,7 +56,7 @@ namespace API.Controllers
             }
             catch (System.Exception ex)
             {
-                await _uow.Rollback();
+                await _uow.Rollback();                                                       
                 return BadRequest(new Retorno<Usuario> { mensagem = ex.Message, dados = null });
             }
         }
