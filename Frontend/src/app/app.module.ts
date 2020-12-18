@@ -20,6 +20,7 @@ import { LoginService } from './services/login.service';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { CookieService } from 'ngx-cookie-service';
+import { ProfileComponent } from './profile/profile.component';
 
 registerLocaleData(localePt);
 
@@ -35,6 +36,7 @@ registerLocaleData(localePt);
     ProductComponent,
     CartComponent,
     ProductCardComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

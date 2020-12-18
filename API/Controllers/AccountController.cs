@@ -4,6 +4,7 @@ using API.Uow;
 using API.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -14,11 +15,13 @@ namespace API.Controllers
     {
         private readonly ClienteRepository _repository;
         private readonly IUnitOfWork _uow;
+        private readonly IMemoryCache _cache;
 
-        public AccountController(ClienteRepository repository, IUnitOfWork uow)
+        public AccountController(ClienteRepository repository, IUnitOfWork uow, IMemoryCache cache)
         {
             _repository = repository;
             _uow = uow;
+            _cache = cache;
         }
 
         [HttpPost("login")]
@@ -35,6 +38,8 @@ namespace API.Controllers
                 cliente.Senha = null;
                 cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(8));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
+
+                SetToCache(cliente.Id.ToString(), cliente);
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Login realizado com sucesso", Dados = cliente });
             }
@@ -65,6 +70,36 @@ namespace API.Controllers
                 await _uow.Rollback();
 
                 return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message));
+            }
+        }
+
+        [HttpPost("cache/{key}")]
+        [AllowAnonymous]
+        public ActionResult SetToCache([FromRoute] string key, [FromBody] object value)
+        {
+            try
+            {
+                _cache.Set(key, value, System.TimeSpan.FromHours(8));
+                return Ok(true);
+            }
+            catch
+            {
+                return BadRequest(false);                
+            }                        
+        }
+
+        [HttpGet("cache/{key}")]
+        [AllowAnonymous]
+        public ActionResult GetFromCache([FromRoute] string key)
+        {
+            try
+            {
+                _cache.TryGetValue(key, out object value);
+                return Ok(value);
+            }
+            catch
+            {
+                return BadRequest(default);
             }
         }
     }

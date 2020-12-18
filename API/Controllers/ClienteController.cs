@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         // GET: api/Cliente/5
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult> Get(Guid id)
         {
