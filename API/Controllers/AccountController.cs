@@ -5,7 +5,6 @@ using API.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace API.Controllers
 {
@@ -32,7 +31,7 @@ namespace API.Controllers
 
                 if (cliente == null)
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário ou senha inválidos", Dados = null });
-
+                
                 cliente.Senha = null;
                 cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(8));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
@@ -41,7 +40,7 @@ namespace API.Controllers
             }
             catch (System.Exception ex)
             {
-                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message) { Mensagem = "Ocorreu um erro", Dados = null });
+                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message));
             }
         }
 
@@ -54,7 +53,7 @@ namespace API.Controllers
                 var result = await validator.ValidateAsync(usuario);
 
                 if (!result.IsValid)
-                    return UnprocessableEntity(new Retorno<Usuario>(result.Errors) { Mensagem = null, Dados = null });
+                    return UnprocessableEntity(new Retorno<Usuario>(result.Errors));
 
                 await _repository.Add(usuario);
                 await _uow.Commit();
@@ -65,7 +64,7 @@ namespace API.Controllers
             {
                 await _uow.Rollback();
 
-                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message) { Mensagem = "Ocorreu um erro", Dados = null });
+                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message));
             }
         }
     }

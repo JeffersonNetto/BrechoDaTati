@@ -92,7 +92,7 @@ export class SignupComponent implements OnInit {
     
     this.registerService
       .Register(this.cliente)
-      .pipe(first())
+      //.pipe(first())
       .subscribe(
         (success) => {
           this.retorno = success;                    

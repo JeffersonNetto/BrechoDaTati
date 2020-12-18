@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login.service';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { CookieService } from 'ngx-cookie-service';
 
 registerLocaleData(localePt);
 
@@ -46,8 +47,9 @@ registerLocaleData(localePt);
   ],
   providers: [
     ProductService,
-    LoginService,
+    LoginService,    
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+    CookieService
   ],
   bootstrap: [AppComponent],
 })

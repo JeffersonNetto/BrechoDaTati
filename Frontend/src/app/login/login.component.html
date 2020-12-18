@@ -58,15 +58,12 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
-                    <input formControlName="Senha" class="form-control" placeholder="Senha" maxlength="20" minlength="6" type="password" (focus)="focus1=true"
+                    <input formControlName="Senha" class="form-control" placeholder="Senha" maxlength="20" type="password" (focus)="focus1=true"
                       (blur)="focus1=false">
                   </div>
                   <div>
                     <small class="text-danger" *ngIf="submitted && f.Senha.errors?.required">Informe a sua senha</small>
-                  </div>
-                  <div>
-                    <small class="text-danger" *ngIf="submitted && f.Senha.errors?.minlength">A senha precisa ter pelo menos 6 caracteres</small>
-                  </div>
+                  </div>                  
                 </div>
                 <div class="custom-control custom-control-alternative custom-checkbox">
                   <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
@@ -74,11 +71,14 @@
                     <span>Lembrar de mim</span>
                   </label>
                 </div>
-                <div class="alert alert-danger mt-3" role="alert" *ngIf="showErrorAlert">
-                  <span>{{errorMessage}}</span>
+                <div class="alert alert-danger mt-3" role="alert" *ngIf="showAlert">
+                  <span>{{alertMessage}}</span>                  
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary" [ngClass]="{'my-2': showErrorAlert, 'my-4': !showErrorAlert}">Entrar</button>
+                  <button type="submit" class="btn btn-primary" [ngClass]="{'my-2': showAlert, 'my-4': !showAlert}" [disabled]="!loginForm.valid">Entrar</button>
+                </div>
+                <div class="text-primary text-center display-4" *ngIf="loading">     
+                  <i class="fas fa-spinner fa-spin"></i>             
                 </div>
               </form>
             </div>
