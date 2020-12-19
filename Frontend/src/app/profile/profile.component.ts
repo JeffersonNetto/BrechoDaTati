@@ -20,15 +20,12 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let user = JSON.parse(this.cookieService.get('emb_user'));        
-
-    console.log(user)
+    let user: Cliente = JSON.parse(this.cookieService.get('emb_user'));        
 
     this.cacheService
       .GetFromCache<Cliente>(user.Id)      
       .subscribe(
         (s) => {
-          console.log('obtido no cache', s);
           this.cliente = s;
         },
         (err) => {
@@ -37,7 +34,6 @@ export class ProfileComponent implements OnInit {
         () => {
           if (!this.cliente) {            
             this.profileService.GetById(user.Id).subscribe((s) => {
-              console.log('obtido no banco de dados', s);
               this.cliente = s;
             });
           }

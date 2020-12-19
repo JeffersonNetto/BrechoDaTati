@@ -102,5 +102,30 @@ namespace API.Controllers
                 return BadRequest(default);
             }
         }
+
+        [HttpPost("refreshtoken/{key}")]
+        [Authorize]
+        public async Task<ActionResult> RefreshToken([FromRoute] System.Guid key)
+        {
+            try
+            {
+                var cliente = await _repository.GetById(key);
+
+                if (cliente == null)
+                    return NotFound(new Retorno<Usuario> { Mensagem = "Usuário não encontrado na base de dados", Dados = null });
+
+                cliente.Senha = null;
+                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(8));
+                cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
+
+                SetToCache(cliente.Id.ToString(), cliente);
+
+                return Ok(new Retorno<Cliente> { Mensagem = "Token atualizado com sucesso", Dados = cliente });
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message));
+            }
+        }
     }
 }

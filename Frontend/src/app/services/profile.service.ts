@@ -15,14 +15,15 @@ export class ProfileService {
     private cookieService: CookieService    
   ) { }
 
-  private GetHeaderWithToken() : HttpHeaders {
+  // private GetHeaderWithToken() : HttpHeaders {
 
-    let obj = JSON.parse(this.cookieService.get('emb_user'))    
+  //   let obj = JSON.parse(this.cookieService.get('emb_user'))    
     
-    return new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${ obj?.Token }` })
-  }
+  //   return new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${ obj?.Token }` })
+  // }
 
   public GetById(Id: string) {
-    return this.http.get<Cliente>(`${environment.API}cliente/${Id}`, { headers: this.GetHeaderWithToken() }).pipe(first());        
+    //return this.http.get<Cliente>(`${environment.API}cliente/${Id}`, { headers: this.GetHeaderWithToken() }).pipe(first());
+    return this.http.get<Cliente>(`${environment.API}cliente/${Id}`).pipe(first());        
   }
 }

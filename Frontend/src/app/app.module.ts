@@ -21,6 +21,7 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { CookieService } from 'ngx-cookie-service';
 import { ProfileComponent } from './profile/profile.component';
+import { InterceptorModule } from './helpers/interceptor.module';
 
 registerLocaleData(localePt);
 
@@ -46,13 +47,14 @@ registerLocaleData(localePt);
     RouterModule,
     HttpClientModule,
     ReactiveFormsModule,
+    InterceptorModule
   ],
   providers: [
     ProductService,
-    LoginService,    
+    LoginService,
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     CookieService
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
