@@ -9,8 +9,10 @@ import { ProductService } from '../services/product.service';
 })
 export class ProductsComponent implements OnInit {
   produtos: Produto[] = [];
+  pageSize: number = 9;
+  page: number = 1;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.productService.Get().subscribe(
@@ -21,7 +23,7 @@ export class ProductsComponent implements OnInit {
       (err: any) => {
         console.warn(err);
       },
-      () => { }
+      () => {}
     );
   }
 }
