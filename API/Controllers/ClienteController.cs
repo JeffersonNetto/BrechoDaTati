@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Repositories;
 using API.Uow;
+using API.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -57,24 +58,31 @@ namespace API.Controllers
 
         // PUT: api/Cliente/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put(Guid id, Cliente cliente)
+        public async Task<IActionResult> Put(Guid id, Cliente cliente, [FromServices] ClienteValidator validator)
         {
             try
             {
                 if (id != cliente.Id)
                     return BadRequest();
-                
+
+                var result = await validator.ValidateAsync(cliente);
+
+                if (!result.IsValid)
+                    return UnprocessableEntity(new Retorno<Cliente>(result.Errors));
+
                 _repository.Update(cliente);
                 await _uow.Commit();
 
-                return Ok(await Get(cliente.Id));
+                cliente = await _repository.GetById(id);
+
+                return Ok(new Retorno<Cliente> { Mensagem = "Cadastro atualizado com sucesso", Dados = cliente });
             }
             catch (Exception ex)
             {
                 await _uow.Rollback();
-                return BadRequest(ex);
+                return BadRequest(new Retorno<Cliente>(ex.InnerException?.Message));
             }
         }
 

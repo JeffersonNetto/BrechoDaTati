@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Cliente } from '../models/Cliente';
+import { Retorno } from '../models/Retorno';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +15,12 @@ export class ProfileService {
     private http: HttpClient,
     private cookieService: CookieService    
   ) { }
-
-  // private GetHeaderWithToken() : HttpHeaders {
-
-  //   let obj = JSON.parse(this.cookieService.get('emb_user'))    
-    
-  //   return new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${ obj?.Token }` })
-  // }
-
-  public GetById(Id: string) {
-    //return this.http.get<Cliente>(`${environment.API}cliente/${Id}`, { headers: this.GetHeaderWithToken() }).pipe(first());
+  
+  public GetById(Id: string) {    
     return this.http.get<Cliente>(`${environment.API}cliente/${Id}`).pipe(first());        
+  }
+
+  public Update(cliente: Cliente) {
+    return this.http.put<Retorno<Cliente>>(`${environment.API}cliente/${cliente.Id}`, cliente).pipe(first());
   }
 }
