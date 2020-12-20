@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using API.Models;
+﻿using API.Models;
 using API.Repositories;
 using API.Uow;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -12,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class CondicaoController : ControllerBase
     {
-        private readonly CondicaoRepository _repository;
+        private readonly IRepositoryBase<Condicao> _repository;
         private readonly IUnitOfWork _uow;
 
-        public CondicaoController(CondicaoRepository repository, IUnitOfWork uow)
+        public CondicaoController(IRepositoryBase<Condicao> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;

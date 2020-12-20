@@ -13,77 +13,66 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Categoria]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Cliente]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
+         "Name": "[dbo].[ClienteEndereco]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ClienteProdutoFavorito]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Condicao]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Cupom]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Manga]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Marca]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Modelagem]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Pedido]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[PedidoItem]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Produto]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[ProdutoImagem]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[StatusPedido]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Tamanho]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Tecido]",
          "ObjectType": 0
       }

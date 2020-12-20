@@ -21,6 +21,7 @@ namespace API.Data
 
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<Cliente> Cliente { get; set; }
+        public virtual DbSet<ClienteEndereco> ClienteEndereco { get; set; }
         public virtual DbSet<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }
         public virtual DbSet<Condicao> Condicao { get; set; }
         public virtual DbSet<Cupom> Cupom { get; set; }
@@ -37,6 +38,8 @@ namespace API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AS");
+
             modelBuilder.Entity<Categoria>(entity =>
             {
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
@@ -91,6 +94,47 @@ namespace API.Data
                     .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ClienteEndereco>(entity =>
+            {
+                entity.Property(e => e.Bairro)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Cep)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Cidade)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Complemento)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Logradouro)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Uf)
+                    .IsRequired()
+                    .HasMaxLength(2)
+                    .IsUnicode(false)
+                    .HasColumnName("UF")
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.Cliente)
+                    .WithMany(p => p.ClienteEndereco)
+                    .HasForeignKey(d => d.ClienteId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClienteEndereco_Cliente");
             });
 
             modelBuilder.Entity<ClienteProdutoFavorito>(entity =>

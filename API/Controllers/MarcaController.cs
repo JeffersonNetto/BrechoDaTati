@@ -11,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class MarcaController : ControllerBase
     {
-        private readonly MarcaRepository _repository;
+        private readonly IRepositoryBase<Marca> _repository;
         private readonly IUnitOfWork _uow;
 
-        public MarcaController(MarcaRepository repository, IUnitOfWork uow)
+        public MarcaController(IRepositoryBase<Marca> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -37,7 +37,7 @@ namespace API.Controllers
         }
 
         // GET: api/Marca/5
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> Get(short id)
         {
             try
@@ -54,7 +54,7 @@ namespace API.Controllers
 
         // PUT: api/Marca/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put(short id, Marca marca)
         {
             try
@@ -94,7 +94,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/Marca/5
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(short id)
         {
             try

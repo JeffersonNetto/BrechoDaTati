@@ -36,5 +36,5 @@ export class Produto {
     Modelagem: Modelagem | undefined
     Tamanho!: Tamanho
     Tecido: Tecido | undefined
-    ProdutoImagem!: ProdutoImagem[]
+    ProdutoImagem!: ProdutoImagem[] | undefined
 }

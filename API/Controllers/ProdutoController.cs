@@ -11,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly ProdutoRepository _repository;
+        private readonly IProdutoRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public ProdutoController(ProdutoRepository repository, IUnitOfWork uow)
+        public ProdutoController(IProdutoRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;

@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.Data;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,27 @@ using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-    public class ProdutoRepository : RepositoryBase<Produto>
+    public interface IProdutoRepository : IRepositoryBase<Produto>
     {
-        public ProdutoRepository(Data.Context context) : base(context)
-        {
+        Task<Produto> GetBySlug(string slug);
+    }
+    public class ProdutoRepository : IProdutoRepository
+    {
+        private readonly Context _context;
 
-        }
+        public ProdutoRepository(Context context) =>
+            _context = context;
 
-        public override async Task<IEnumerable<Produto>> GetAll() =>
+        public async Task Add(Produto obj) =>
+            await _context.Produto.AddAsync(obj);
+
+        public async Task<bool> Exists<T>(T id) =>
+            await _context.Produto
+            .AsNoTracking()
+            .FirstOrDefaultAsync(_ => _.Id.Equals(id)) != null;
+
+
+        public async Task<IEnumerable<Produto>> GetAll() =>
              await
             _context.Produto
             .Include(_ => _.Marca)
@@ -28,7 +42,7 @@ namespace API.Repositories
             .AsNoTracking()
             .ToListAsync();
 
-        public override async Task<Produto> GetById<T>(T id) => 
+        public async Task<Produto> GetById<T>(T id) =>
             await
             _context.Produto
             .Include(_ => _.Marca)
@@ -40,7 +54,7 @@ namespace API.Repositories
             .Include(_ => _.Tecido)
             .Include(_ => _.ProdutoImagem)
             .AsNoTracking()
-            .SingleOrDefaultAsync(_ => _.Id.Equals(id));
+            .FirstOrDefaultAsync(_ => _.Id.Equals(id));
 
         public async Task<Produto> GetBySlug(string slug) =>
             await
@@ -54,6 +68,15 @@ namespace API.Repositories
             .Include(_ => _.Tecido)
             .Include(_ => _.ProdutoImagem)
             .AsNoTracking()
-            .SingleOrDefaultAsync(_ => _.Slug == slug);
+            .FirstOrDefaultAsync(_ => _.Slug == slug);
+
+        public void Remove(Produto obj) =>
+            _context.Produto.Remove(obj);        
+
+        public void Update(Produto obj)
+        {
+            _context.Entry(obj).State = EntityState.Modified;
+            _context.Entry(obj).Property("DataCriacao").IsModified = false;
+        }
     }
 }

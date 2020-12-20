@@ -11,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class MangaController : ControllerBase
     {
-        private readonly MangaRepository _repository;
+        private readonly IRepositoryBase<Manga> _repository;
         private readonly IUnitOfWork _uow;
 
-        public MangaController(MangaRepository repository, IUnitOfWork uow)
+        public MangaController(IRepositoryBase<Manga> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;

@@ -11,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly CategoriaRepository _repository;
+        private readonly IRepositoryBase<Categoria> _repository;
         private readonly IUnitOfWork _uow;
 
-        public CategoriaController(CategoriaRepository repository, IUnitOfWork uow)
+        public CategoriaController(IRepositoryBase<Categoria> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;

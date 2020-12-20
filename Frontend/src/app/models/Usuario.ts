@@ -1,6 +1,6 @@
 export class Usuario {
     Email!: string
     Senha!: string
-    Token!: string
-    RefreshToken!: string
+    Token: string | undefined    
+    RefreshToken: string | undefined
 }

@@ -13,10 +13,10 @@ namespace API.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        private readonly ClienteRepository _repository;
+        private readonly IClienteRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public ClienteController(ClienteRepository repository, Uow.IUnitOfWork uow)
+        public ClienteController(IClienteRepository repository, Uow.IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -24,7 +24,7 @@ namespace API.Controllers
 
         // GET: api/Cliente
         [HttpGet]
-        [Authorize]
+        //[Authorize]        
         public async Task<IActionResult> Get()
         {
             try

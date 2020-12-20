@@ -10,21 +10,21 @@ namespace API.Models
     {
         public Cliente()
         {
+            ClienteEndereco = new HashSet<ClienteEndereco>();
             ClienteProdutoFavorito = new HashSet<ClienteProdutoFavorito>();
             Pedido = new HashSet<Pedido>();
         }
 
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
-        public string Cpf { get; set; }
-        public new string Email { get; set; }
-        public new string Senha { get; set; }
+        public string Cpf { get; set; }        
         public string Celular { get; set; }
-        public bool Ativo { get; set; } = false;
+        public bool Ativo { get; set; }
         public DateTime DataNascimento { get; set; }
         public DateTime DataCriacao { get; set; } = DateTime.Now;
 
+        public virtual ICollection<ClienteEndereco> ClienteEndereco { get; set; }
         public virtual ICollection<ClienteProdutoFavorito> ClienteProdutoFavorito { get; set; }
         public virtual ICollection<Pedido> Pedido { get; set; }
     }

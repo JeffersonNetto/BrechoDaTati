@@ -11,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class TecidoController : ControllerBase
     {
-        private readonly TecidoRepository _repository;
+        private readonly IRepositoryBase<Tecido> _repository;
         private readonly IUnitOfWork _uow;
 
-        public TecidoController(TecidoRepository repository, Uow.IUnitOfWork uow)
+        public TecidoController(IRepositoryBase<Tecido> repository, Uow.IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
