@@ -13,11 +13,11 @@ namespace API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly ClienteRepository _repository;
+        private readonly IClienteRepository _repository;
         private readonly IUnitOfWork _uow;
         private readonly IMemoryCache _cache;
 
-        public AccountController(ClienteRepository repository, IUnitOfWork uow, IMemoryCache cache)
+        public AccountController(IClienteRepository repository, IUnitOfWork uow, IMemoryCache cache)
         {
             _repository = repository;
             _uow = uow;

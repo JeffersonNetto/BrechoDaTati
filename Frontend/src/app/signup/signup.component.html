@@ -153,7 +153,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="alert mt-3 pb-1" [ngClass]="{'alert-danger': !success, 'alert-success': success}" role="alert" *ngIf="showAlert">
+                <div class="alert mt-3" [ngClass]="{'alert-danger': !success, 'alert-success': success}" role="alert" *ngIf="showAlert">
                   <div>{{alertMessage}}</div>
                   <ul *ngFor="let erro of retorno.Erros">                    
                     <li>{{erro}}</li>

@@ -25,10 +25,11 @@ namespace API.Repositories
             .AsNoTracking()
             .FirstOrDefaultAsync(_=>_.Id.Equals(id)) != null;
 
-        public async Task<IEnumerable<Cliente>> GetAll() =>        
+        public async Task<IEnumerable<Cliente>> GetAll() =>
             await _context.Cliente
             .Include(_ => _.ClienteEndereco)
             .Include(_ => _.ClienteProdutoFavorito).ThenInclude(_ => _.Produto)
+            .Include(_ => _.Pedido).ThenInclude(_ => _.PedidoItem).ThenInclude(_ => _.Produto)
             .AsNoTracking()
             .ToListAsync();
        
@@ -36,6 +37,7 @@ namespace API.Repositories
             await _context.Cliente
             .Include(_ => _.ClienteEndereco)
             .Include(_ => _.ClienteProdutoFavorito).ThenInclude(_ => _.Produto)
+            .Include(_ => _.Pedido).ThenInclude(_ => _.PedidoItem).ThenInclude(_ => _.Produto)
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Email == email && _.Senha == senha);
 
@@ -43,6 +45,7 @@ namespace API.Repositories
             await _context.Cliente
             .Include(_ => _.ClienteEndereco)
             .Include(_ => _.ClienteProdutoFavorito).ThenInclude(_ => _.Produto)
+            .Include(_ => _.Pedido).ThenInclude(_ => _.PedidoItem).ThenInclude(_ => _.Produto)
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Id.Equals(id));
 

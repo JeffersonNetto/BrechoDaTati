@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { Cliente } from '../models/Cliente';
 import { Retorno } from '../models/Retorno';
 import { RegisterService } from '../services/register.service';
@@ -92,7 +93,7 @@ export class SignupComponent implements OnInit {
     
     this.registerService
       .Register(this.cliente)
-      //.pipe(first())
+      .pipe(finalize(() => this.loading = false))
       .subscribe(
         (success) => {
           this.retorno = success;                    
@@ -101,12 +102,18 @@ export class SignupComponent implements OnInit {
           this.success = true;
           this.loading = false;
         },
-        (err) => {
-          this.retorno = err.error
-          this.alertMessage = this.retorno.Mensagem
+        (err: HttpErrorResponse) => {
+
+          if (err.status == 0) {
+            this.alertMessage =
+              'Sistema temporariamente indisponível. Tente novamente mais tarde.';
+          } else if (err.status > 0) {
+            this.retorno = err.error;
+            this.alertMessage = this.retorno.Mensagem;
+          }
+
           this.showAlert = true;
-          this.success = false;
-          this.loading = false;
+          this.success = false;          
         },        
       );
   }

@@ -1,4 +1,5 @@
 import { ClienteEndereco } from "./ClienteEndereco"
+import { Pedido } from "./Pedido"
 import { Usuario } from "./Usuario"
 
 export class Cliente extends Usuario {
@@ -11,4 +12,5 @@ export class Cliente extends Usuario {
     DataNascimento!: Date
     DataCriacao!: Date    
     ClienteEndereco: ClienteEndereco[] | undefined
+    Pedido: Pedido[] | undefined
 }
