@@ -22,6 +22,9 @@ import localePt from '@angular/common/locales/pt';
 import { CookieService } from 'ngx-cookie-service';
 import { ProfileComponent } from './profile/profile.component';
 import { InterceptorModule } from './helpers/interceptor.module';
+import { NumbersOnlyDirective } from './directives/numbers-only.directive';
+import { AddressFormComponent } from './address-form/address-form.component'
+import { NgxViacepModule } from '@brunoc/ngx-viacep';
 
 registerLocaleData(localePt);
 
@@ -38,6 +41,8 @@ registerLocaleData(localePt);
     CartComponent,
     ProductCardComponent,
     ProfileComponent,
+    NumbersOnlyDirective,
+    AddressFormComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,8 @@ registerLocaleData(localePt);
     RouterModule,
     HttpClientModule,
     ReactiveFormsModule,
-    InterceptorModule
+    InterceptorModule,
+    NgxViacepModule
   ],
   providers: [
     ProductService,

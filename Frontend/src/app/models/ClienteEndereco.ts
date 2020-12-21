@@ -6,7 +6,7 @@ export class ClienteEndereco {
     Complemento: string | undefined
     Bairro: string | undefined
     Cidade!: string
-    UF!: string
+    Uf!: string
     Cep: string | undefined
     Ativo!: boolean
     DataCriacao!: Date

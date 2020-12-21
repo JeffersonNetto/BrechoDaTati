@@ -1,0 +1,83 @@
+<div class="modal-content">
+  <div class="modal-body p-0">
+    <div class="card bg-secondary shadow border-0">
+      <div class="card-header bg-white pb-5">
+        <div class="text-muted text-center mb-3">
+          <small>Editando endereço</small>
+        </div>
+      </div>
+      <div class="card-body px-lg-5 py-lg-5">
+        <form role="form" [formGroup]="addressForm" (ngSubmit)="Salvar()">
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+              </div>
+              <input class="form-control" placeholder="Cep" type="text" formControlName="Cep" (blur)="GetAddressViaCep()">
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+              </div>
+              <input class="form-control" placeholder="Logradouro" type="text" formControlName="Logradouro">
+            </div>
+            <div>
+              <small class="text-danger" *ngIf="submitted && f.Logradouro.errors?.required">Informe o logradouro</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+              </div>
+              <input class="form-control" placeholder="Número" type="text" formControlName="Numero">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+              </div>
+              <input class="form-control" placeholder="Complemento" type="password" formControlName="Complemento">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+              </div>
+              <input class="form-control" placeholder="Bairro" type="text" formControlName="Bairro">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+              </div>
+              <input class="form-control" placeholder="Cidade" type="text" formControlName="Cidade">
+            </div>
+            <div>
+                <small class="text-danger" *ngIf="submitted && f.Cidade.errors?.required">Informe a cidade</small>
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+              </div>
+              <input class="form-control" placeholder="UF" type="text" formControlName="Uf">
+            </div>
+            <div>
+                <small class="text-danger" *ngIf="submitted && f.Uf.errors?.required">Informe o estado (UF)</small>
+              </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary my-4">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

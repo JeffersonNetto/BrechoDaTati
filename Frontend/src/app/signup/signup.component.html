@@ -76,8 +76,8 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                     </div>
-                    <input formControlName="Cpf" maxlength="11" class="form-control" placeholder="CPF" type="text"
-                      (focus)="focus=true" (blur)="focus=false">
+                    <input formControlName="Cpf" maxlength="11" class="form-control" placeholder="CPF (somente números)" type="text"
+                      (focus)="focus=true" (blur)="focus=false" numbersOnly>
                   </div>
                   <div>
                     <small class="text-danger" *ngIf="submitted && f.Cpf.errors?.required">Informe seu CPF</small>

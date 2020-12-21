@@ -24,7 +24,12 @@
       </div>
     </section>
   </div>
-  <div class="container">
+
+  <div class="text-primary text-center display-4" *ngIf="loading">     
+    <i class="fas fa-spinner fa-spin"></i>             
+  </div>
+
+  <div class="container" *ngIf="!loading">
     <div class="row justify-content-center">
       <div class="col">
         <ngb-tabset [justify]="'center'" class="custom-tab-content flex-column flex-md-row" type="pills">
@@ -33,7 +38,7 @@
               <i class="far fa-address-card mr-2"></i> Meus dados
             </ng-template>
             <ng-template ngbTabContent>
-              <div *ngIf="cliente">
+              <div>
                 <form role="form" [formGroup]="registerForm" (ngSubmit)="Salvar()">
                   <div class="form-group" [ngClass]="{'focused':focus===true}">
                     <div class="input-group input-group-alternative mb-3">
@@ -73,8 +78,9 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                       </div>
-                      <input formControlName="Cpf" maxlength="11" class="form-control" placeholder="CPF" type="text"
-                        (focus)="focus=true" (blur)="focus=false">
+                      <input formControlName="Cpf" maxlength="11" class="form-control"
+                        placeholder="CPF (somente números)" type="text" (focus)="focus=true" (blur)="focus=false"
+                        numbersOnly>
                     </div>
                     <div>
                       <small class="text-danger" *ngIf="submitted && f.Cpf.errors?.required">Informe seu CPF</small>
@@ -90,8 +96,9 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
                       </div>
-                      <input formControlName="Celular" maxlength="11" class="form-control" placeholder="Celular"
-                        type="text" (focus)="focus=true" (blur)="focus=false">
+                      <input formControlName="Celular" maxlength="11" class="form-control"
+                        placeholder="Celular (somente números)" type="text" (focus)="focus=true" (blur)="focus=false"
+                        numbersOnly>
                     </div>
                     <div>
                       <small class="text-danger" *ngIf="submitted && f.Celular.errors?.minlength">O celular precisa ter
@@ -177,7 +184,7 @@
             <ng-template ngbTabTitle>
               <i class="fas fa-shopping-bag mr-2"></i> Pedidos
             </ng-template>
-            <ng-template ngbTabContent *ngIf="cliente">
+            <ng-template ngbTabContent>
 
               <ngb-accordion [closeOthers]="true" *ngFor="let pedido of cliente.Pedido">
 
@@ -190,17 +197,17 @@
 
                 <ngb-panel>
                   <ng-template ngbPanelHeader>
-                    
-                      <div class="row">
-                        <div class="display-5 m-0 col-md-6"><strong>Pedido:</strong> {{pedido.Id}}</div>
-                        <div class="display-5 m-0 col-md-4"><strong>Data:</strong>
-                          {{pedido.DataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
-                        <div class="col-md-2 text-right">
-                          <button style="text-transform: none !important;" ngbPanelToggle class="btn btn-sm btn-outline-primary">Detalhes <i
-                              class="fas fa-chevron-down"></i></button>
-                        </div>
+
+                    <div class="row">
+                      <div class="display-5 m-0 col-md-6"><strong>Pedido:</strong> {{pedido.Id}}</div>
+                      <div class="display-5 m-0 col-md-4"><strong>Data:</strong>
+                        {{pedido.DataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+                      <div class="col-md-2 text-right">
+                        <button style="text-transform: none !important;" ngbPanelToggle
+                          class="btn btn-sm btn-outline-primary">Detalhes <i class="fas fa-chevron-down"></i></button>
                       </div>
-                    
+                    </div>
+
                   </ng-template>
                   <ng-template ngbPanelContent>
                     <div *ngFor="let item of pedido.PedidoItem">
@@ -214,7 +221,7 @@
                             <span class="font-weight-bold text-warning">{{item.Produto.Nome}}</span>
                           </div>
                           <div>
-                            <span>{{item.Produto.Descricao}}</span> 
+                            <span>{{item.Produto.Descricao}}</span>
                           </div>
                           <div class="mt-2">
                             <span class="font-weight-bold">Quantidade:</span> {{item.Quantidade}}
@@ -238,11 +245,25 @@
             </ng-template>
             <ng-template ngbTabContent>
               <div *ngFor="let endereco of cliente.ClienteEndereco">
-                <div>{{endereco.Logradouro}}</div>
+                <div class="card bg-gradient-secondary shadow mb-3">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <span>{{endereco.Logradouro}}</span>                    
+                      </div>
+                      <div class="col text-right">                                                
+                          <a style="cursor: pointer;" (click)="Open(classic1, endereco)"><i class="far fa-edit display-5 text-primary" title="Editar"></i></a>                          
+                      </div>
+                    </div>                    
+                  </div>
+                </div>
               </div>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>
+        <ng-template #classic1 let-c="close" let-d="dismiss">
+          <app-address-form [endereco]="endereco"></app-address-form>
+        </ng-template>        
       </div>
     </div>
   </div>

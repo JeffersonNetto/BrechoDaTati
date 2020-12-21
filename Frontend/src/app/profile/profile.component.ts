@@ -8,6 +8,8 @@ import { CacheService } from '../services/cache.service';
 import { ProfileService } from '../services/profile.service';
 import * as moment from 'moment';
 import { RegisterService } from '../services/register.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ClienteEndereco } from '../models/ClienteEndereco';
 
 @Component({
   selector: 'app-profile',
@@ -29,40 +31,45 @@ export class ProfileComponent implements OnInit {
   alertMessage: string | undefined;
   forcaDaSenha: string | undefined;
   success: boolean | undefined;
-  retorno!: Retorno<Cliente>
+  retorno!: Retorno<Cliente>;
+  closeResult: string;
+  endereco: ClienteEndereco;
 
   constructor(
     private cacheService: CacheService,
     private cookieService: CookieService,
     private profileService: ProfileService,
-    private formBuilder: FormBuilder    
+    private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
+    this.loading = true;
 
     this.CreateForm();
-            
-    let user: Cliente = JSON.parse(this.cookieService.get('emb_user'));        
+
+    let user: Cliente = JSON.parse(this.cookieService.get('emb_user'));
 
     this.cacheService
-      .GetFromCache<Cliente>(user.Id)      
+      .GetFromCache<Cliente>(user.Id)
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe(
         (s) => {
           this.cliente = s;
-          this.CreateForm();          
+          this.CreateForm();
         },
         (err) => {
           console.warn(err);
         },
         () => {
-          if (!this.cliente) {            
+          if (!this.cliente) {
             this.profileService.GetById(user.Id).subscribe((s) => {
               this.cliente = s;
               this.CreateForm();
             });
           }
         }
-      );            
+      );
   }
 
   get f() {
@@ -106,84 +113,84 @@ export class ProfileComponent implements OnInit {
     this.forcaDaSenha = forcaSenha;
   }
 
-  CreateForm(){
-    
-      this.registerForm = this.formBuilder.group({
-        Nome: [
-          this.cliente?.Nome,
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(100),
-          ],
+  CreateForm() {
+    this.registerForm = this.formBuilder.group({
+      Nome: [
+        this.cliente?.Nome,
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(100),
         ],
-        Sobrenome: [
-          this.cliente?.Sobrenome,
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(100),
-          ],
+      ],
+      Sobrenome: [
+        this.cliente?.Sobrenome,
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(100),
         ],
-        Cpf: [
-          this.cliente?.Cpf,
-          [
-            Validators.required,
-            Validators.minLength(11),
-            Validators.maxLength(11),
-          ],
+      ],
+      Cpf: [
+        this.cliente?.Cpf,
+        [
+          Validators.required,
+          Validators.minLength(11),
+          Validators.maxLength(11),
         ],
-        Celular: [
-          this.cliente?.Celular,
-          [            
-            Validators.minLength(11),
-            Validators.maxLength(11),
-          ],
+      ],
+      Celular: [
+        this.cliente?.Celular,
+        [Validators.minLength(11), Validators.maxLength(11)],
+      ],
+      DataNascimento: [
+        moment(this.cliente?.DataNascimento).format('YYYY-MM-DD')?.toString(),
+        Validators.required,
+      ],
+      Email: [this.cliente?.Email, [Validators.required, Validators.email]],
+      Senha: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20),
         ],
-        DataNascimento: [moment(this.cliente?.DataNascimento).format('YYYY-MM-DD')?.toString(), Validators.required],
-        Email: [this.cliente?.Email, [Validators.required, Validators.email]],
-        Senha: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.maxLength(20),
-          ],
-        ],
-      });
-    
+      ],
+    });
   }
 
-  Salvar() {    
-    
+  Salvar() {
     this.submitted = true;
 
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
-    
+
     this.loading = true;
 
     this.cliente = Object.assign({}, this.cliente, this.registerForm.value);
-    
-    this.profileService
-      .Update(this.cliente)      
-      .subscribe(
-        (success) => {
-          this.retorno = success;                    
-          this.alertMessage = this.retorno.Mensagem
-          this.showAlert = true;
-          this.success = true;
-          this.loading = false;
-        },
-        (err) => {
-          this.retorno = err.error
-          this.alertMessage = this.retorno.Mensagem
-          this.showAlert = true;
-          this.success = false;
-          this.loading = false;
-        },        
-      );
+
+    this.profileService.Update(this.cliente).subscribe(
+      (success) => {
+        this.retorno = success;
+        this.alertMessage = this.retorno.Mensagem;
+        this.showAlert = true;
+        this.success = true;
+        this.loading = false;
+      },
+      (err) => {
+        this.retorno = err.error;
+        this.alertMessage = this.retorno.Mensagem;
+        this.showAlert = true;
+        this.success = false;
+        this.loading = false;
+      }
+    );
+  }
+
+  Open(content: any, endereco: ClienteEndereco) {
+    this.endereco = endereco;
+    this.modalService.open(content, { centered: true });
   }
 }
