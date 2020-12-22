@@ -18,6 +18,7 @@ namespace API.IoC
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IRepositoryBase<Manga>, MangaRepository>();
             services.AddScoped<ClienteValidator>();
+            services.AddScoped<ClienteEnderecoValidator>();
             services.AddMemoryCache();
         }
     }

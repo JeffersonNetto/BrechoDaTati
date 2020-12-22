@@ -24,7 +24,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { InterceptorModule } from './helpers/interceptor.module';
 import { NumbersOnlyDirective } from './directives/numbers-only.directive';
 import { AddressFormComponent } from './address-form/address-form.component'
-import { NgxViacepModule } from '@brunoc/ngx-viacep';
 
 registerLocaleData(localePt);
 
@@ -52,8 +51,7 @@ registerLocaleData(localePt);
     RouterModule,
     HttpClientModule,
     ReactiveFormsModule,
-    InterceptorModule,
-    NgxViacepModule
+    InterceptorModule
   ],
   providers: [
     ProductService,

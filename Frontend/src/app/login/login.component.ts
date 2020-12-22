@@ -50,11 +50,10 @@ export class LoginComponent implements OnInit {
 
   Entrar() {
     this.submitted = true;
-
-    // stop here if form is invalid
-    // if (this.loginForm.invalid) {
-    //   return;
-    // }
+    
+    if (this.loginForm.invalid) {
+      return;
+    }
 
     this.loading = true;
     this.loginService

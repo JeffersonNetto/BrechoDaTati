@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie-service';
 import { Cliente } from '../models/Cliente';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -24,13 +25,15 @@ export class Interceptor implements HttpInterceptor {
     if (this.cookieService.check('emb_user')) {
       let obj: Cliente = JSON.parse(this.cookieService.get('emb_user'));
       this.token = obj.Token;
-    }
+    }    
 
-    request = request.clone({
-      setHeaders: {
-        Authorization: 'Bearer ' + this.token,
-      },
-    });
+    if (request.url.startsWith(environment.API)) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: 'Bearer ' + this.token,
+        },
+      });
+    }
 
     return next.handle(request);
   }

@@ -1,6 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 import { ClienteEndereco } from '../models/ClienteEndereco';
+import { EnderecoViaCep } from '../models/EnderecoViaCep';
+import { Retorno } from '../models/Retorno';
 import { AddressService } from '../services/address.service';
 
 @Component({
@@ -9,9 +13,14 @@ import { AddressService } from '../services/address.service';
   styleUrls: ['./address-form.component.scss'],
 })
 export class AddressFormComponent implements OnInit {
-  @Input() endereco: ClienteEndereco;
+  @Input() endereco: ClienteEndereco;  
   addressForm!: FormGroup;
   submitted: boolean = false;
+  loading: boolean = false;
+  showAlert: boolean = false;
+  alertMessage: string | undefined;
+  success: boolean | undefined;
+  retorno!: Retorno<ClienteEndereco>;
 
   constructor(
     private addressService: AddressService,
@@ -34,7 +43,7 @@ export class AddressFormComponent implements OnInit {
       ],
       Complemento: [
         this.endereco?.Complemento,
-        [Validators.minLength(100), Validators.maxLength(100)],
+        [Validators.minLength(1), Validators.maxLength(100)],
       ],
       Bairro: [
         this.endereco?.Bairro,
@@ -67,23 +76,59 @@ export class AddressFormComponent implements OnInit {
     this.addressService
       .GetAddressViaCep(this.addressForm.get('Cep').value)
       .subscribe(
-        (success) => {
-          console.log(success);
+        (success: EnderecoViaCep) => {
+          this.addressForm.get('Logradouro').setValue(success.logradouro);
+          this.addressForm.get('Numero').setValue(null);
+          this.addressForm.get('Complemento').setValue(success.complemento);
+          this.addressForm.get('Bairro').setValue(success.bairro);
+          this.addressForm.get('Cidade').setValue(success.localidade);
+          this.addressForm.get('Uf').setValue(success.uf);          
         },
         (err) => {
-          console.log(err)
+          console.log(err);
         }
       );
   }
 
   Salvar() {
-    this.submitted = true;
+    this.submitted = true;    
 
-    this.addressService.UpdateAddress(this.endereco).subscribe(
-      (success) => {},
-      (err) => {
-        console.log(err)        
-      }
-    );
+    if (this.addressForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    Object.assign(this.endereco, this.addressForm.value);
+
+    console.log(this.endereco);
+
+    this.addressService
+      .UpdateAddress(this.endereco)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.showAlert = true;
+        })
+      )
+      .subscribe(
+        (success) => {
+          this.retorno = success;
+          this.alertMessage = this.retorno.Mensagem;          
+          this.success = true;
+        },
+        (err: HttpErrorResponse) => {
+
+          if (err.status == 0) {
+            this.alertMessage =
+              'Sistema temporariamente indisponível. Tente novamente mais tarde.';
+          } else if (err.status > 0) {
+            this.retorno = err.error;
+            this.alertMessage = this.retorno.Mensagem;
+          }
+          
+          this.success = false;          
+        },  
+      );
   }
 }

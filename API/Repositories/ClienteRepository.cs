@@ -9,6 +9,8 @@ namespace API.Repositories
     public interface IClienteRepository : IRepositoryBase<Cliente>
     {
         Task<Cliente> GetByEmailSenha(string email, string senha);
+        void UpdateEndereco(ClienteEndereco endereco);
+        Task<ClienteEndereco> GetEnderecoById(int id);
     }
     public class ClienteRepository : IClienteRepository
     {
@@ -49,10 +51,21 @@ namespace API.Repositories
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Id.Equals(id));
 
+        public async Task<ClienteEndereco> GetEnderecoById(int id) =>        
+            await _context.ClienteEndereco            
+            .AsNoTracking()
+            .FirstOrDefaultAsync(_ => _.Id == id);        
+
         public void Remove(Cliente obj) =>        
             _context.Cliente.Remove(obj);        
 
         public void Update(Cliente obj)
+        {
+            _context.Entry(obj).State = EntityState.Modified;
+            _context.Entry(obj).Property("DataCriacao").IsModified = false;
+        }
+
+        public void UpdateEndereco(ClienteEndereco obj)
         {
             _context.Entry(obj).State = EntityState.Modified;
             _context.Entry(obj).Property("DataCriacao").IsModified = false;

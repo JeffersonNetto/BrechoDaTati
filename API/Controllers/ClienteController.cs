@@ -124,5 +124,31 @@ namespace API.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpPut("endereco/{id}")]
+        [Authorize]
+        public async Task<IActionResult> PutEndereco(int id, ClienteEndereco endereco, [FromServices] ClienteEnderecoValidator validator)
+        {
+            try
+            {
+                if (id != endereco.Id)
+                    return BadRequest();
+
+                var result = await validator.ValidateAsync(endereco);
+
+                if (!result.IsValid)
+                    return UnprocessableEntity(new Retorno<ClienteEndereco>(result.Errors));
+
+                _repository.UpdateEndereco(endereco);
+                await _uow.Commit();
+                
+                return Ok(new Retorno<ClienteEndereco> { Mensagem = "Endereço atualizado com sucesso", Dados = endereco });
+            }
+            catch (Exception ex)
+            {
+                await _uow.Rollback();
+                return BadRequest(new Retorno<ClienteEndereco>(ex.InnerException?.Message));
+            }
+        }
     }
 }

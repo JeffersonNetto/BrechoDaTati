@@ -1,9 +1,9 @@
 <div class="modal-content">
   <div class="modal-body p-0">
     <div class="card bg-secondary shadow border-0">
-      <div class="card-header bg-white pb-5">
-        <div class="text-muted text-center mb-3">
-          <small>Editando endereço</small>
+      <div class="card-header bg-white">
+        <div class="text-muted text-center">
+          <span class="text-muted">Editando o endereço</span>
         </div>
       </div>
       <div class="card-body px-lg-5 py-lg-5">
@@ -13,7 +13,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
               </div>
-              <input class="form-control" placeholder="Cep" type="text" formControlName="Cep" (blur)="GetAddressViaCep()">
+              <input class="form-control" placeholder="Cep" type="text" formControlName="Cep" (blur)="GetAddressViaCep()" numbersOnly>
             </div>
           </div>
           <div class="form-group mb-3">
@@ -32,7 +32,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
               </div>
-              <input class="form-control" placeholder="Número" type="text" formControlName="Numero">
+              <input class="form-control" #inputNumero placeholder="Número" type="text" formControlName="Numero" numbersOnly>
             </div>
           </div>
           <div class="form-group">
@@ -40,7 +40,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
               </div>
-              <input class="form-control" placeholder="Complemento" type="password" formControlName="Complemento">
+              <input class="form-control" placeholder="Complemento" type="text" formControlName="Complemento">
             </div>
           </div>
           <div class="form-group">
@@ -73,8 +73,17 @@
                 <small class="text-danger" *ngIf="submitted && f.Uf.errors?.required">Informe o estado (UF)</small>
               </div>
           </div>
+          <div class="alert mt-3" [ngClass]="{'alert-danger': !success, 'alert-success': success}" role="alert" *ngIf="showAlert">
+            <div>{{alertMessage}}</div>
+            <ul *ngFor="let erro of retorno.Erros">                    
+              <li>{{erro}}</li>
+            </ul>
+          </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary my-4">Salvar</button>
+            <button type="submit" class="btn btn-outline-primary">Salvar</button>
+          </div>
+          <div class="text-primary text-center display-4" *ngIf="loading">     
+            <i class="fas fa-spinner fa-spin"></i>             
           </div>
         </form>
       </div>
