@@ -36,7 +36,7 @@ namespace API.Controllers
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário ou senha inválidos", Dados = null });
                 
                 cliente.Senha = null;
-                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(8));
+                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddMinutes(2));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
 
                 SetToCache(cliente.Id.ToString(), cliente);
@@ -74,7 +74,7 @@ namespace API.Controllers
         }
 
         [HttpPost("cache/{key}")]
-        [AllowAnonymous]
+        [Authorize]
         public ActionResult SetToCache([FromRoute] string key, [FromBody] object value)
         {
             try
@@ -89,7 +89,7 @@ namespace API.Controllers
         }
 
         [HttpGet("cache/{key}")]
-        [AllowAnonymous]
+        [Authorize]
         public ActionResult GetFromCache([FromRoute] string key)
         {
             try
@@ -103,7 +103,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("refreshtoken/{key}")]
+        [HttpGet("refreshtoken/{key}")]
         [Authorize]
         public async Task<ActionResult> RefreshToken([FromRoute] System.Guid key)
         {
@@ -115,7 +115,7 @@ namespace API.Controllers
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário não encontrado na base de dados", Dados = null });
 
                 cliente.Senha = null;
-                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(8));
+                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddMinutes(2));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
 
                 SetToCache(cliente.Id.ToString(), cliente);

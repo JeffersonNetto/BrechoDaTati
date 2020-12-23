@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 
   Entrar() {
     this.submitted = true;
-    
+
     if (this.loginForm.invalid) {
       return;
     }
@@ -58,16 +58,23 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.loginService
       .Login(this.f.Email.value, this.f.Senha.value)
-      .pipe(finalize(() => this.loading = false))
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe(
-        (success) => {          
+        (success) => {
           this.retorno = success;
-          //this.loading = false;
-          this.cookieService.set('emb_user', JSON.stringify({Id: `${this.retorno.Dados?.Id}`, Token: this.retorno.Dados?.Token}));
+          console.log(this.retorno)
+          this.cookieService.set(
+            'emb_user',
+            JSON.stringify({
+              Id: this.retorno.Dados?.Id,
+              Token: this.retorno.Dados?.Token,
+              RefreshToken: this.retorno.Dados?.RefreshToken,
+            })
+          );
           this.router.navigate([this.returnUrl]);
         },
         (err: HttpErrorResponse) => {
-          console.log(err)
+          console.log(err);
           if (err.status == 0) {
             this.alertMessage =
               'Sistema temporariamente indisponível. Tente novamente mais tarde.';

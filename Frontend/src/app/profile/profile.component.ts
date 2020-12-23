@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { RegisterService } from '../services/register.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClienteEndereco } from '../models/ClienteEndereco';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -40,7 +42,8 @@ export class ProfileComponent implements OnInit {
     private cookieService: CookieService,
     private profileService: ProfileService,
     private formBuilder: FormBuilder,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,14 +62,22 @@ export class ProfileComponent implements OnInit {
           this.CreateForm();
         },
         (err) => {
-          console.warn(err);
+          console.log(err)
         },
         () => {
           if (!this.cliente) {
-            this.profileService.GetById(user.Id).subscribe((s) => {
-              this.cliente = s;
-              this.CreateForm();
-            });
+            this.profileService.GetById(user.Id).subscribe(
+              (s) => {
+                this.cliente = s;
+                this.CreateForm();
+              },
+              (err: HttpErrorResponse) => {
+                console.log(err)
+                if (err.status == 0) {
+                } else {
+                }
+              }
+            );
           }
         }
       );
