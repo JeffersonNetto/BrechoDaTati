@@ -15,8 +15,16 @@ const routes: Routes = [
   { path: 'register', component: SignupComponent },
   { path: 'produtos', component: ProductsComponent },
   { path: 'produto/:slug', component: ProductComponent },
-  { path: 'perfil', component: ProfileComponent, canActivate: [AuthGuardService] },
-  { path: 'carrinho', component: CartComponent, canActivate: [AuthGuardService] },
+  {
+    path: 'perfil',
+    component: ProfileComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'carrinho',
+    component: CartComponent,
+    canActivate: [AuthGuardService],
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 

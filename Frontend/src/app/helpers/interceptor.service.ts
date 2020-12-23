@@ -12,7 +12,11 @@ import { Cliente } from '../models/Cliente';
 import { environment } from 'src/environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { AccountService } from '../services/account.service';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  Router,
+} from '@angular/router';
 import { EMPTY } from 'rxjs';
 
 @Injectable({
@@ -26,7 +30,8 @@ export class Interceptor implements HttpInterceptor {
   constructor(
     private cookieService: CookieService,
     private accountService: AccountService,
-    private router: Router    
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   // intercept(
@@ -58,7 +63,7 @@ export class Interceptor implements HttpInterceptor {
       this.token = obj.Token;
       this.refreshToken = obj.RefreshToken;
       this.clienteId = obj.Id;
-    }
+    }    
 
     if (request.url.startsWith(environment.API)) {
       request = request.clone({
@@ -70,9 +75,7 @@ export class Interceptor implements HttpInterceptor {
               : this.token),
         },
       });
-    }
-
-    console.log(request);
+    }    
 
     // return next.handle(request).pipe(
     //   tap(
@@ -114,7 +117,7 @@ export class Interceptor implements HttpInterceptor {
             this.router.navigate['login'];
             return EMPTY;
           }
-          
+
           return this.accountService.RefreshToken(this.clienteId).subscribe(
             (success) => {
               if (success.Dados) {
@@ -125,8 +128,11 @@ export class Interceptor implements HttpInterceptor {
                     Token: success.Dados.Token,
                     RefreshToken: success.Dados.RefreshToken,
                   })
-                );
-                this.router.navigateByUrl(request.url); //verificar como fazer o redirecionamento
+                );                
+
+                this.router.navigate([this.router.url]).then(() => {
+                  window.location.reload();
+                });                
               }
             },
             (err) => {

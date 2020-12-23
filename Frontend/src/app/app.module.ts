@@ -23,7 +23,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { ProfileComponent } from './profile/profile.component';
 import { InterceptorModule } from './helpers/interceptor.module';
 import { NumbersOnlyDirective } from './directives/numbers-only.directive';
-import { AddressFormComponent } from './address-form/address-form.component'
+import { AddressFormComponent } from './address-form/address-form.component';
+import { PasswordFormComponent } from './password-form/password-form.component'
 
 registerLocaleData(localePt);
 
@@ -41,7 +42,8 @@ registerLocaleData(localePt);
     ProductCardComponent,
     ProfileComponent,
     NumbersOnlyDirective,
-    AddressFormComponent
+    AddressFormComponent,
+    PasswordFormComponent
   ],
   imports: [
     BrowserModule,

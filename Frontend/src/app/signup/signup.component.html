@@ -134,7 +134,7 @@
                   </div>
                 </div>
                 <div class="text-muted font-italic">
-                  <small>força da senha:
+                  <small *ngIf="f.Senha.value.length > 0">força da senha:
                     <span
                       [ngClass]="{'text-danger': forcaDaSenha === 'Muito Fraca' || forcaDaSenha === 'Fraca', 'text-warning': forcaDaSenha === 'Média', 'text-success': forcaDaSenha === 'Forte'}"
                       class="font-weight-700">{{forcaDaSenha}}</span>

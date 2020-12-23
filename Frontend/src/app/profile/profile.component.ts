@@ -12,6 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClienteEndereco } from '../models/ClienteEndereco';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Helpers } from '../helpers/helpers';
 
 @Component({
   selector: 'app-profile',
@@ -46,7 +47,8 @@ export class ProfileComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+
     this.loading = true;
 
     this.CreateForm();
@@ -88,40 +90,7 @@ export class ProfileComponent implements OnInit {
   }
 
   VerificarForcaDaSenha() {
-    let password = this.f.Senha.value;
-    var caracteresEspeciais = '!£$%^&*_@#~?';
-    var passwordPontos = 0;
-
-    // Contém caracteres especiais
-    for (var i = 0; i < password.length; i++) {
-      if (caracteresEspeciais.indexOf(password.charAt(i)) > -1) {
-        passwordPontos += 20;
-        break;
-      }
-    }
-    // Contém numeros
-    if (/\d/.test(password)) passwordPontos += 20;
-    // Contém letras minúsculas
-    if (/[a-z]/.test(password)) passwordPontos += 20;
-    // Contém letras maiúsculas
-    if (/[A-Z]/.test(password)) passwordPontos += 20;
-    if (password.length >= 8) passwordPontos += 20;
-    var forcaSenha = '';
-    var backgroundColor = 'red';
-    if (passwordPontos >= 100) {
-      forcaSenha = 'Forte';
-      backgroundColor = 'green';
-    } else if (passwordPontos >= 80) {
-      forcaSenha = 'Média';
-      backgroundColor = 'gray';
-    } else if (passwordPontos >= 60) {
-      forcaSenha = 'Fraca';
-      backgroundColor = 'maroon';
-    } else {
-      forcaSenha = 'Muito Fraca';
-      backgroundColor = 'red';
-    }
-    this.forcaDaSenha = forcaSenha;
+    this.forcaDaSenha = Helpers.VerificarForcaDaSenha(this.f.Senha.value)    
   }
 
   CreateForm() {

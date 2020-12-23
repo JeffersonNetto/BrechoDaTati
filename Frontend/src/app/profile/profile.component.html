@@ -260,6 +260,16 @@
               </div>
             </ng-template>
           </ngb-tab>
+
+          <ngb-tab>
+            <ng-template ngbTabTitle>
+              <i class="fas fa-key mr-2"></i> Alterar senha
+            </ng-template>
+            <ng-template ngbTabContent>
+              <app-password-form></app-password-form>
+            </ng-template>
+          </ngb-tab>
+
         </ngb-tabset>
         <ng-template #classic1 let-c="close" let-d="dismiss">
           <app-address-form [endereco]="endereco"></app-address-form>
