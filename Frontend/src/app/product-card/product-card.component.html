@@ -4,11 +4,11 @@
             <img src="../../assets/img/theme/{{produto.ImagemPrincipal}}"
                 class="img-center img-fluid shadow shadow-lg--hover" />
             <div class="overlay">
-                <a href="#" class="icon">
-                    <i class="fas fa-info-circle" title="Mais detalhes"></i>
-                    <i class="fas fa-heart" title="Favoritar"></i>
-                    <i class="fas fa-cart-plus" title="Adicionar ao carrinho"></i>                                            
-                    <i class="fas fa-share-alt" title="Compartilhar"></i>
+                <a class="icon">
+                    <i class="fas fa-info-circle" title="Mais detalhes" style="cursor: pointer;"></i>
+                    <i class="fas fa-heart" title="Favoritar" style="cursor: pointer;"></i>
+                    <i class="fas fa-cart-plus" title="Adicionar ao carrinho" style="cursor: pointer;" (click)="Adicionar()"></i>                                            
+                    <i class="fas fa-share-alt" title="Compartilhar" style="cursor: pointer;"></i>
                 </a>
             </div>
         </div>
@@ -26,18 +26,18 @@
                 </a>
             </div>
             <div class="col">
-                <a>
+                <a style="cursor: pointer;">
                     <i class="fas fa-heart text-danger" title="Favoritar"></i>
                 </a>
             </div>
             <div class="col">
-                <a>
+                <a style="cursor: pointer;">
                     <i class="fas fa-cart-plus text-primary"
-                        title="Adicionar ao carrinho"></i>
+                        title="Adicionar ao carrinho" (click)="Adicionar()"></i>
                 </a>
             </div>      
             <div class="col">
-                <a>
+                <a style="cursor: pointer;">
                     <i class="fas fa-share-alt text-info"
                         title="Compartilhar"></i>
                 </a>

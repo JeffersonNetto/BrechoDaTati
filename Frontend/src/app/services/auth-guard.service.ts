@@ -20,7 +20,7 @@ export class AuthGuardService implements CanActivate {
     
     if (this.cookieService.check('emb_user')) {
        return true;
-    }
+    }    
 
     this.router.navigate(['login']);
     return false;
