@@ -23,7 +23,7 @@ const routes: Routes = [
   {
     path: 'carrinho',
     component: CartComponent,
-    canActivate: [AuthGuardService],
+    //canActivate: [AuthGuardService],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
