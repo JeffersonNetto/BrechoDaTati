@@ -67,6 +67,7 @@ namespace API.Controllers
                 _ = email
                     .To(usuario.Email, usuario.Nome)
                     .Subject("Cadastro realizado com sucesso")
+                    .Body("Corpo da mensagem de teste")
                     .SendAsync();
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Cadastro realizado com sucesso", Dados = usuario });

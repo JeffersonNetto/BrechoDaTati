@@ -64,7 +64,10 @@ namespace API
             services.AddDbContext<Context>(options => options.UseSqlServer(conexao), ServiceLifetime.Scoped);
             //services.AddDbContext<Context>(options => options.UseInMemoryDatabase(databaseName: "BrechoDaTati"), ServiceLifetime.Scoped);
 
-            services.AddFluentEmail(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br").AddRazorRenderer().AddSmtpSender(new System.Net.Mail.SmtpClient("smtp-mail.outlook.com", 587)
+            services
+                .AddFluentEmail(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br")
+                .AddRazorRenderer()
+                .AddSmtpSender(new System.Net.Mail.SmtpClient("smtp-mail.outlook.com", 587)
             {
                 Credentials = new System.Net.NetworkCredential(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br", Configuration["emailPassword"] ?? "Tfa159357*"),
                 EnableSsl = true
