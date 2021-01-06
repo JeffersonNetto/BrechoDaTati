@@ -2,6 +2,7 @@
 using API.Repositories;
 using API.Uow;
 using API.Validators;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -34,7 +35,7 @@ namespace API.Controllers
 
                 if (cliente == null)
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário ou senha inválidos", Dados = null });
-                
+
                 cliente.Senha = null;
                 cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddMinutes(2));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
@@ -51,7 +52,7 @@ namespace API.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(Cliente usuario, [FromServices] ClienteValidator validator)
+        public async Task<ActionResult> Register(Cliente usuario, [FromServices] ClienteValidator validator, [FromServices] IFluentEmail email)
         {
             try
             {
@@ -62,6 +63,11 @@ namespace API.Controllers
 
                 await _repository.Add(usuario);
                 await _uow.Commit();
+
+                _ = email
+                    .To(usuario.Email, usuario.Nome)
+                    .Subject("Cadastro realizado com sucesso")
+                    .SendAsync();
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Cadastro realizado com sucesso", Dados = usuario });
             }
@@ -84,8 +90,8 @@ namespace API.Controllers
             }
             catch
             {
-                return BadRequest(false);                
-            }                        
+                return BadRequest(false);
+            }
         }
 
         [HttpGet("cache/{key}")]
