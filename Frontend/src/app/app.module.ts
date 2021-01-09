@@ -25,6 +25,8 @@ import { InterceptorModule } from './helpers/interceptor.module';
 import { NumbersOnlyDirective } from './directives/numbers-only.directive';
 import { AddressFormComponent } from './address-form/address-form.component';
 import { PasswordFormComponent } from './password-form/password-form.component'
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(localePt);
 
@@ -53,7 +55,9 @@ registerLocaleData(localePt);
     RouterModule,
     HttpClientModule,
     ReactiveFormsModule,
-    InterceptorModule
+    InterceptorModule,
+    NoopAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     ProductService,

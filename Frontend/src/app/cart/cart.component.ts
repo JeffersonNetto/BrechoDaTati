@@ -1,54 +1,82 @@
 import { Component, OnInit } from '@angular/core';
+import { Pedido } from '../models/Pedido';
+import { PedidoItem } from '../models/PedidoItem';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
+  pedido: Pedido;
+  subTotal = 0;
+  total = 0;
+  desconto = 0;
 
-  items: any[] = [
-    {
-      Titulo: 'Teste01',
-      Descricao: 'Descrição 01',
-      Valor: 'R$ 149,99',
-      Quantidade: 1
-    },
-    {
-      Titulo: 'Teste02',
-      Descricao: 'Descrição 02',
-      Valor: 'R$ 199,99',
-      Quantidade: 3
-    },
-    {
-      Titulo: 'Teste03',
-      Descricao: 'Descrição 03',
-      Valor: 'R$ 99,99',
-      Quantidade: 2
-    },
-  ]
-
-  constructor() { }
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
+    //this.pedido = this.cartService.carrinho?.getValue();
+
+    this.cartService.carrinho?.subscribe(success => {
+      this.pedido = success;
+      this.CalcularResumo();
+    });
   }
 
-  Diminuir(item: any) {    
-    let i = this.items.findIndex(_ => _.Titulo == item.Titulo)
+  Diminuir(item: PedidoItem) {
+    let i = this.pedido.PedidoItem.findIndex(
+      (_) => _.ProdutoId == item.ProdutoId
+    );
 
-    if(this.items[i].Quantidade > 1) {
-      this.items[i].Quantidade -= 1;    
-    }    
+    if (this.pedido.PedidoItem[i].Quantidade > 1) {
+      this.pedido.PedidoItem[i].Quantidade -= 1;
+    }
+
+    this.cartService.carrinho.next(this.pedido);
   }
 
-  Aumentar(item: any) {    
-    let i = this.items.findIndex(_ => _.Titulo == item.Titulo)
-    this.items[i].Quantidade += 1;    
+  Aumentar(item: PedidoItem) {
+    let i = this.pedido.PedidoItem.findIndex(
+      (_) => _.ProdutoId == item.ProdutoId
+    );
+    this.pedido.PedidoItem[i].Quantidade += 1;
+
+    this.cartService.carrinho.next(this.pedido);
   }
 
-  Remover(item: any){
-    let i = this.items.findIndex(_ => _.Titulo == item.Titulo)
-    this.items.splice(i, 1);
+  Remover(item: PedidoItem) {
+    let i = this.pedido.PedidoItem.findIndex(
+      (_) => _.ProdutoId == item.ProdutoId
+    );
+
+    this.pedido.PedidoItem.splice(i, 1);
+
+    this.cartService.carrinho.next(this.pedido);
   }
 
+  FinalizarCompra() {
+    console.log('finalizar compra')
+  }
+
+  CalcularResumo() {
+    this.total = 0;
+    this.subTotal = 0;
+    this.desconto = 0;
+
+    console.log(this.pedido);
+
+    this.pedido.PedidoItem.forEach((_) => {
+      this.desconto += _.Quantidade * (_.ValorUnitario - _.ValorUnitarioPago);
+      this.subTotal += _.Quantidade * _.ValorUnitario;
+    });
+
+    console.log('subTotal', this.subTotal);
+    console.log('total', this.total);
+
+    this.total = this.subTotal - this.desconto;
+
+    console.log('desconto', this.desconto);
+  }
 }
