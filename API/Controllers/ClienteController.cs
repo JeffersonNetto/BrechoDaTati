@@ -127,7 +127,7 @@ namespace API.Controllers
 
         [HttpPut("endereco/{id}")]
         [Authorize]
-        public async Task<IActionResult> PutEndereco(int id, ClienteEndereco endereco, [FromServices] ClienteEnderecoValidator validator)
+        public async Task<IActionResult> Put(int id, ClienteEndereco endereco, [FromServices] ClienteEnderecoValidator validator)
         {
             try
             {

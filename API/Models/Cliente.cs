@@ -15,7 +15,7 @@ namespace API.Models
             Pedido = new HashSet<Pedido>();
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Cpf { get; set; }        

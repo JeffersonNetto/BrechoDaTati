@@ -13,9 +13,10 @@ namespace API.Models
             PedidoItem = new HashSet<PedidoItem>();
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid ClienteId { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public string Ip { get; set; }
         public int? CupomId { get; set; }
         public short StatusId { get; set; }
 

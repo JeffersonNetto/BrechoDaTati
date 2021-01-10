@@ -15,7 +15,7 @@ namespace API.Models
             ProdutoImagem = new HashSet<ProdutoImagem>();
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public string Slug { get; set; }
@@ -27,7 +27,7 @@ namespace API.Models
         public decimal? ValorPromocional { get; set; }
         public int Estoque { get; set; }
         public bool Ativo { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
         public short CondicaoId { get; set; }
         public string Cor { get; set; }
         public short? MangaId { get; set; }
