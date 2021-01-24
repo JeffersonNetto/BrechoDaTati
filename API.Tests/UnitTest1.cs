@@ -1,35 +1,40 @@
-using Moq;
-using System.Collections.Generic;
-using Xunit;
+using API.Controllers;
 using API.Models;
 using API.Repositories;
+using Bogus;
 using FluentAssertions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Moq;
+using Moq.AutoMock;
+using Xunit;
 
 namespace API.Tests
 {
     public class UnitTest1
     {
+        [Fact]
+        public async void GetMarcasShouldNotBeNull()
+        {
+            //Arrange
+            var mocker = new AutoMocker();
+            
+            var expected = new Faker<Marca>("pt_BR")
+                .RuleFor(m => m.Id, f => f.Random.Short(1, 100))
+                .RuleFor(m => m.Nome, f => f.Company.CompanyName())
+                .RuleFor(m => m.Ativo, f => f.Random.Bool())
+                .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
+                .Generate(5);                      
 
+            mocker.GetMock<IRepositoryBase<Marca>>().Setup(_ => _.GetAll()).ReturnsAsync(expected);
 
-        //[Fact]
-        //public async void GetMarcasShouldNotBeNull()
-        //{
-        //    Mock<MarcaRepository> mock = new Mock<MarcaRepository>(new Mock<Data.Context>().Object);
+            var controller = mocker.CreateInstance<MarcaController>();
 
-        //    mock.Setup(_ => _.GetAll()).ReturnsAsync(new List<Marca>());
+            //Act
+            var actual = await controller.Get();
 
-        //    var expected = await mock.Object.GetAll();
-
-        //    var optionsBuilder = new DbContextOptionsBuilder<Data.Context>().UseSqlServer("Data Source=localhost;Initial Catalog=BrechoDaTati;User Id=sa;Password=123456;");
-
-        //    var actual = await new MarcaRepository(new Data.Context(optionsBuilder.Options)).GetAll();
-
-        //    expected.Should().BeEquivalentTo(actual);
-
-        //    actual.Should().NotBeNull().And.BeOfType<List<Marca>>();
-        //}
+            //Assert
+            actual.GetType().GetProperty("Value").GetValue(actual).Should().BeEquivalentTo(expected);
+            actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(200);
+        }
 
         //[Fact]
         //public async void AddMarca()

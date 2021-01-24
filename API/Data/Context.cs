@@ -10,9 +10,10 @@ namespace API.Data
 {
     public partial class Context : DbContext
     {
-        public Context()
-        {
-        }
+        //public Context() : base()
+        //{
+
+        //}
 
         public Context(DbContextOptions<Context> options)
             : base(options)
