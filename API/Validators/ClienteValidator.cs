@@ -37,10 +37,10 @@ namespace API.Validators
                 .Must(BeValidCelular).When(x => !string.IsNullOrWhiteSpace(x.Celular)).WithMessage("Informe um número de celular válido");
         }
 
-        private bool BeValidCelular(string celular) =>
+        public bool BeValidCelular(string celular) =>
             celular?.Length == 11 && celular?[2] == '9';        
             
-        private bool BeValidCpf(string cpf)
+        public bool BeValidCpf(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
