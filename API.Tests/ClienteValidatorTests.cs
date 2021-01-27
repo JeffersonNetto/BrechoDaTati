@@ -9,13 +9,15 @@ namespace API.Tests
 {
     public class ClienteValidatorTests
     {
-        [Fact]        
-        public void CPF_DeveSerValido()
+        [Theory]
+        [InlineData("08358330626")]
+        [InlineData("05478794660")]
+        [InlineData("82398608000")]
+        [InlineData("67865526091")]        
+        public void CPF_DeveSerValido(string cpf)
         {
             //Arrange
-            var clienteValidator = new ClienteValidator();                        
-
-            var cpf = new Faker("pt_BR").Person.Cpf(false);
+            var clienteValidator = new ClienteValidator();                                    
 
             //Act
             bool result = clienteValidator.BeValidCpf(cpf);

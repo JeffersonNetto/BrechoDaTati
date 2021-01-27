@@ -113,6 +113,30 @@ namespace API.Tests
         }
 
         [Fact]
+        public async void UpdateMarca2()
+        {
+            //Arrange
+            var mocker = new AutoMocker();
+
+            var marca = new Faker<Marca>("pt_BR")
+                .RuleFor(m => m.Id, f => f.Random.Short(1, 100))
+                .RuleFor(m => m.Nome, f => f.Company.CompanyName())
+                .RuleFor(m => m.Ativo, f => f.Random.Bool())
+                .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
+                .Generate(1)[0];
+
+            var controller = mocker.CreateInstance<MarcaController>();
+
+            //Act
+            var actual = await controller.Put(0, marca);
+
+            //Assert            
+            actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(400);
+            mocker.GetMock<IRepositoryBase<Marca>>().Verify(m => m.Update(marca), Times.Never);
+            mocker.GetMock<IUnitOfWork>().Verify(u => u.Commit(), Times.Never);
+        }
+
+        [Fact]
         public async void GetMarcaShouldNotBeNull()
         {
             //Arrange

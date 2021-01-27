@@ -6,6 +6,7 @@ using FluentEmail.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -17,12 +18,22 @@ namespace API.Controllers
         private readonly IClienteRepository _repository;
         private readonly IUnitOfWork _uow;
         private readonly IMemoryCache _cache;
+        private readonly ClienteValidator _validator;
+        private readonly IFluentEmail _email;
 
-        public AccountController(IClienteRepository repository, IUnitOfWork uow, IMemoryCache cache)
+        public AccountController(
+            IClienteRepository repository, 
+            IUnitOfWork uow, 
+            IMemoryCache cache, 
+            ClienteValidator validator, 
+            IFluentEmail email
+            )
         {
             _repository = repository;
             _uow = uow;
             _cache = cache;
+            _validator = validator;
+            _email = email;
         }
 
         [HttpPost("login")]
@@ -44,7 +55,7 @@ namespace API.Controllers
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Login realizado com sucesso", Dados = cliente });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message));
             }
@@ -52,11 +63,11 @@ namespace API.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(Cliente usuario, [FromServices] ClienteValidator validator, [FromServices] IFluentEmail email)
+        public async Task<ActionResult> Register(Cliente usuario)
         {
             try
             {
-                var result = await validator.ValidateAsync(usuario);
+                var result = await _validator.ValidateAsync(usuario);
 
                 if (!result.IsValid)
                     return UnprocessableEntity(new Retorno<Usuario>(result.Errors));
@@ -64,11 +75,11 @@ namespace API.Controllers
                 await _repository.Add(usuario);
                 await _uow.Commit();
 
-                _ = email
-                    .To(usuario.Email, usuario.Nome)
-                    .Subject("Cadastro realizado com sucesso")
-                    .Body("Corpo da mensagem de teste")
-                    .SendAsync();
+                //_ = _email
+                //    .To(usuario.Email, usuario.Nome)
+                //    .Subject("Cadastro realizado com sucesso")
+                //    .Body("Corpo da mensagem de teste")
+                //    .SendAsync();
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Cadastro realizado com sucesso", Dados = usuario });
             }
@@ -82,7 +93,7 @@ namespace API.Controllers
 
         [HttpPost("cache/{key}")]
         [Authorize]
-        public ActionResult SetToCache([FromRoute] string key, [FromBody] object value)
+        public virtual ActionResult SetToCache([FromRoute] string key, [FromBody] object value)
         {
             try
             {
