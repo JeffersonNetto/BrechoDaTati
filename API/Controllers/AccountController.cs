@@ -18,27 +18,21 @@ namespace API.Controllers
         private readonly IClienteRepository _repository;
         private readonly IUnitOfWork _uow;
         private readonly IMemoryCache _cache;
-        private readonly ClienteValidator _validator;
-        private readonly IFluentEmail _email;
 
         public AccountController(
-            IClienteRepository repository, 
-            IUnitOfWork uow, 
-            IMemoryCache cache, 
-            ClienteValidator validator, 
-            IFluentEmail email
+            IClienteRepository repository,
+            IUnitOfWork uow,
+            IMemoryCache cache
             )
         {
             _repository = repository;
             _uow = uow;
             _cache = cache;
-            _validator = validator;
-            _email = email;
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(Usuario usuario)
+        public async Task<IActionResult> Login(Usuario usuario)
         {
             try
             {
@@ -63,11 +57,15 @@ namespace API.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(Cliente usuario)
+        public async Task<IActionResult> Register(
+            Cliente usuario,
+            [FromServices] ClienteValidator validator,
+            [FromServices] IFluentEmail email
+            )
         {
             try
             {
-                var result = await _validator.ValidateAsync(usuario);
+                var result = await validator.ValidateAsync(usuario);
 
                 if (!result.IsValid)
                     return UnprocessableEntity(new Retorno<Usuario>(result.Errors));
@@ -75,15 +73,15 @@ namespace API.Controllers
                 await _repository.Add(usuario);
                 await _uow.Commit();
 
-                //_ = _email
-                //    .To(usuario.Email, usuario.Nome)
-                //    .Subject("Cadastro realizado com sucesso")
-                //    .Body("Corpo da mensagem de teste")
-                //    .SendAsync();
+                _ = email
+                    .To(usuario.Email, usuario.Nome)
+                    .Subject("Cadastro realizado com sucesso")
+                    .Body("Corpo da mensagem de teste")
+                    .SendAsync();
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Cadastro realizado com sucesso", Dados = usuario });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 await _uow.Rollback();
 
@@ -93,11 +91,11 @@ namespace API.Controllers
 
         [HttpPost("cache/{key}")]
         [Authorize]
-        public virtual ActionResult SetToCache([FromRoute] string key, [FromBody] object value)
+        public IActionResult SetToCache([FromRoute] string key, [FromBody] object value)
         {
             try
             {
-                _cache.Set(key, value, System.TimeSpan.FromHours(8));
+                _cache.Set(key, value, TimeSpan.FromHours(8));
                 return Ok(true);
             }
             catch
@@ -108,22 +106,17 @@ namespace API.Controllers
 
         [HttpGet("cache/{key}")]
         [Authorize]
-        public ActionResult GetFromCache([FromRoute] string key)
+        public IActionResult GetFromCache([FromRoute] string key)
         {
-            try
-            {
-                _cache.TryGetValue(key, out object value);
+            if (_cache.TryGetValue(key, out object value))
                 return Ok(value);
-            }
-            catch
-            {
-                return BadRequest(default);
-            }
+            else
+                return NotFound(default);
         }
 
         [HttpGet("refreshtoken/{key}")]
         [Authorize]
-        public async Task<ActionResult> RefreshToken([FromRoute] System.Guid key)
+        public async Task<IActionResult> RefreshToken([FromRoute] System.Guid key)
         {
             try
             {
