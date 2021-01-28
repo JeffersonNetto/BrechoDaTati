@@ -36,7 +36,11 @@ namespace API.Tests
                 .Generate(1)[0];
 
             var controller = mocker.CreateInstance<AccountController>();
-            mocker.GetMock<IClienteRepository>().Setup(c => c.GetByEmailSenha(obj.Email, obj.Senha)).ReturnsAsync(obj);            
+            mocker.GetMock<IClienteRepository>().Setup(c => c.GetByEmailSenha(obj.Email, obj.Senha)).ReturnsAsync(obj);
+
+            mocker.GetMock<IMemoryCache>()
+                .Setup(m => m.CreateEntry(It.IsAny<object>()))
+                .Returns(Mock.Of<ICacheEntry>());
 
             //Act
             var actual = await controller.Login(obj);
@@ -200,6 +204,98 @@ namespace API.Tests
 
             //Assert            
             actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(404);
+        }
+
+        [Fact]
+        public void SetToCache_ShouldBeSuccessful()
+        {
+            //Arrange
+            var mocker = new AutoMocker();
+
+            var controller = mocker.CreateInstance<AccountController>();
+
+            mocker.GetMock<IMemoryCache>()
+                .Setup(m => m.CreateEntry(It.IsAny<object>()))                
+                .Returns(Mock.Of<ICacheEntry>());
+
+            //Act
+            var actual = controller.SetToCache("abc", new { });
+
+            //Assert            
+            actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(200);
+        }
+
+        [Fact]
+        public async void RefreshToken_ShouldBeSuccessful()
+        {
+            //Arrange
+            var mocker = new AutoMocker();
+
+            var controller = mocker.CreateInstance<AccountController>();
+
+            var obj = new Faker<Cliente>("pt_BR")
+                .RuleFor(m => m.Id, f => System.Guid.NewGuid())
+                .RuleFor(m => m.Nome, f => f.Person.FirstName)
+                .RuleFor(m => m.Sobrenome, f => f.Person.LastName)
+                .RuleFor(m => m.Cpf, f => f.Person.Cpf(false))
+                .RuleFor(m => m.Email, f => f.Internet.Email())
+                .RuleFor(m => m.DataNascimento, f => f.Date.Past(90, System.DateTime.Now.AddYears(-18)))
+                .RuleFor(m => m.Senha, f => f.Random.AlphaNumeric(6))
+                .RuleFor(m => m.Ativo, f => f.Random.Bool())
+                .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
+                .Generate(1)[0];
+
+            mocker.GetMock<IClienteRepository>()
+                .Setup(_ => _.GetById(It.IsAny<Guid>()))
+                .ReturnsAsync(obj);
+
+            mocker.GetMock<IMemoryCache>()
+                .Setup(m => m.CreateEntry(It.IsAny<object>()))
+                .Returns(Mock.Of<ICacheEntry>());
+
+            //Act
+            var actual = await controller.RefreshToken(Guid.NewGuid());
+
+            //Assert            
+            actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(200);
+        }
+
+        [Fact]
+        public async void RefreshToken_ShouldNotBeSuccessful()
+        {
+            //Arrange
+            var mocker = new AutoMocker();
+
+            var controller = mocker.CreateInstance<AccountController>();
+
+            mocker.GetMock<IClienteRepository>()
+                .Setup(_ => _.GetById(It.IsAny<Guid>()))
+                .ReturnsAsync(null as Cliente);
+
+            //Act
+            var actual = await controller.RefreshToken(Guid.NewGuid());
+
+            //Assert            
+            actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(404);
+        }
+
+        [Fact]
+        public async void RefreshToken_ShouldNotBeSuccessful2()
+        {
+            //Arrange
+            var mocker = new AutoMocker();
+
+            var controller = mocker.CreateInstance<AccountController>();
+
+            mocker.GetMock<IClienteRepository>()
+                .Setup(_ => _.GetById(It.IsAny<Guid>()))
+                .ReturnsAsync(new Cliente());
+
+            //Act
+            var actual = await controller.RefreshToken(Guid.NewGuid());
+
+            //Assert            
+            actual.GetType().GetProperty("StatusCode").GetValue(actual).Should().BeEquivalentTo(400);
         }
     }
 }

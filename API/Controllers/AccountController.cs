@@ -93,15 +93,8 @@ namespace API.Controllers
         [Authorize]
         public IActionResult SetToCache([FromRoute] string key, [FromBody] object value)
         {
-            try
-            {
-                _cache.Set(key, value, TimeSpan.FromHours(8));
-                return Ok(true);
-            }
-            catch
-            {
-                return BadRequest(false);
-            }
+            _cache.Set(key, value, TimeSpan.FromHours(8));            
+            return Ok(true);            
         }
 
         [HttpGet("cache/{key}")]
@@ -116,7 +109,7 @@ namespace API.Controllers
 
         [HttpGet("refreshtoken/{key}")]
         [Authorize]
-        public async Task<IActionResult> RefreshToken([FromRoute] System.Guid key)
+        public async Task<IActionResult> RefreshToken([FromRoute] Guid key)
         {
             try
             {
@@ -126,14 +119,14 @@ namespace API.Controllers
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário não encontrado na base de dados", Dados = null });
 
                 cliente.Senha = null;
-                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddMinutes(2));
-                cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
+                cliente.Token = Services.TokenService.GenerateToken(cliente, DateTime.UtcNow.AddMinutes(2));
+                cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, DateTime.UtcNow.AddHours(16));
 
                 SetToCache(cliente.Id.ToString(), cliente);
 
                 return Ok(new Retorno<Cliente> { Mensagem = "Token atualizado com sucesso", Dados = cliente });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message));
             }
