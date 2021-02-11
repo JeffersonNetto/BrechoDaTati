@@ -27,6 +27,7 @@ import { AddressFormComponent } from './address-form/address-form.component';
 import { PasswordFormComponent } from './password-form/password-form.component'
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { LogoutComponent } from './logout/logout.component';
 
 registerLocaleData(localePt);
 
@@ -45,7 +46,8 @@ registerLocaleData(localePt);
     ProfileComponent,
     NumbersOnlyDirective,
     AddressFormComponent,
-    PasswordFormComponent
+    PasswordFormComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

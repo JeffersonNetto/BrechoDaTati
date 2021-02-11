@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (success) => {
           this.retorno = success;
-          console.log(this.retorno)
+          console.log(this.retorno);
           this.cookieService.set(
             'emb_user',
             JSON.stringify({
@@ -71,6 +71,9 @@ export class LoginComponent implements OnInit {
               RefreshToken: this.retorno.Dados?.RefreshToken,
             })
           );
+
+          this.loginService.isUserLogged.next(true);
+
           this.router.navigate([this.returnUrl]);
         },
         (err: HttpErrorResponse) => {

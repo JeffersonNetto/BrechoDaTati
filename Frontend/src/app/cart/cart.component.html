@@ -17,7 +17,7 @@
       </div>
 
       <div class="container mt-5">
-        <div class="card shadow border-0 my-3" *ngIf="pedido.PedidoItem.length == 0">
+        <div class="card shadow border-0 my-3" *ngIf="pedido.PedidoItem?.length == 0">
           <div class="card-body py-4">
             Carrinho vazio
           </div>

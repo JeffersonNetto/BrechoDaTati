@@ -56,7 +56,7 @@ namespace API.Controllers
                     produto = await _repository.GetById(id);
 
                 if (produto != null)
-                    AtualizarProdutosEmCache();
+                    AtualizarProdutosEmCache(produtos ?? null);
 
                 return produto == null ? NotFound() : Ok(produto);
             }
@@ -82,7 +82,7 @@ namespace API.Controllers
                     produto = await _repository.GetBySlug(slug);
 
                 if (produto != null)
-                    AtualizarProdutosEmCache();
+                    AtualizarProdutosEmCache(produtos ?? null);
 
                 return produto == null ? NotFound() : Ok(produto);                                
             }

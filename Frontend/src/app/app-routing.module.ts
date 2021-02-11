@@ -8,10 +8,12 @@ import { ProductComponent } from './product/product.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ProfileComponent } from './profile/profile.component';
 import { CartComponent } from './cart/cart.component';
+import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
   { path: 'register', component: SignupComponent },
   { path: 'produtos', component: ProductsComponent },
   { path: 'produto/:slug', component: ProductComponent },

@@ -3,6 +3,8 @@ import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
 import { CartService } from 'src/app/services/cart.service';
 import { first, take } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,11 +16,14 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterContentInit {
   private lastPoppedUrl!: string;
   private yScrollStack: number[] = [];
   cartItems: number = 0;
+  isUserLogged: boolean = false;
 
   constructor(
     public location: Location,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private cookieService: CookieService,
+    private loginService: LoginService
   ) {}
 
   ngOnDestroy(){
@@ -55,10 +60,12 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterContentInit {
       this.lastPoppedUrl = ev.url!;
     });
 
-    this.cartService.carrinho?.subscribe((success) => {   
-            
-      this.cartItems = success.PedidoItem?.length || 0;      
-            
+    this.cartService.carrinho?.subscribe((success) => {               
+      this.cartItems = success.PedidoItem?.length || 0;                  
+    });    
+
+    this.loginService.isUserLogged.subscribe(success => {
+      this.isUserLogged = success;
     });
   }
 
