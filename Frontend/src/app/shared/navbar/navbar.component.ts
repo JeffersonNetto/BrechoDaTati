@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngAfterContentInit(){
-    let pedido = this.cartService.carrinho.getValue();
+    let pedido = this.cartService.carrinho?.getValue();
 
     if(pedido?.PedidoItem?.length == 0){
       let cart = localStorage.getItem('cart');
@@ -39,6 +39,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterContentInit {
       if(cart){
         this.cartService.carrinho.next(JSON.parse(cart));
       }
+    }
+
+    if(this.cookieService.check('emb_user')){
+      this.loginService.isUserLogged.next(true);
     }
 
   }

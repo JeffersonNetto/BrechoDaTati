@@ -42,7 +42,7 @@ namespace API.Controllers
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário ou senha inválidos", Dados = null });
 
                 cliente.Senha = null;
-                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddMinutes(2));
+                cliente.Token = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddMinutes(60));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, System.DateTime.UtcNow.AddHours(16));
 
                 SetToCache(cliente.Id.ToString(), cliente);
@@ -119,7 +119,7 @@ namespace API.Controllers
                     return NotFound(new Retorno<Usuario> { Mensagem = "Usuário não encontrado na base de dados", Dados = null });
 
                 cliente.Senha = null;
-                cliente.Token = Services.TokenService.GenerateToken(cliente, DateTime.UtcNow.AddMinutes(2));
+                cliente.Token = Services.TokenService.GenerateToken(cliente, DateTime.UtcNow.AddMinutes(60));
                 cliente.RefreshToken = Services.TokenService.GenerateToken(cliente, DateTime.UtcNow.AddHours(16));
 
                 SetToCache(cliente.Id.ToString(), cliente);

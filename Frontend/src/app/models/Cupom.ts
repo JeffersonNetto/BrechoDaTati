@@ -4,4 +4,5 @@ export class Cupom {
     Ativo!: boolean
     DataInicio!: Date
     DataFim!: Date
+    Desconto: number
 }

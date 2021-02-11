@@ -60,7 +60,7 @@
                     {{ item.Produto.ValorPromocional || item.Produto.ValorVenda | currency: 'BRL' }}
                     <del *ngIf="item.Produto.ValorPromocional" class="text-muted">
                       {{ item.Produto.ValorVenda | currency: 'BRL' }}
-                    </del>                    
+                    </del>
                   </div>
                 </div>
               </div>
@@ -68,17 +68,45 @@
           </div>
         </div>
         <div class="card shadow border-0 my-3" *ngIf="pedido.PedidoItem.length > 0">
-            <div class="card-body py-4 text-right">
+          <div class="card-body py-4">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <label class="font-weight-bold">Possui um cupom de desconto?</label>
+                <input [(ngModel)]="inputCupom" type="text" class="form-control"
+                  placeholder="Digite aqui o código do seu cupom">                
+              </div>
+
+              <div class="col-12 col-md-6 text-center pt-1 mt-2 pt-md-3 mt-md-3">
+                <button class="btn btn-primary" [disabled]="!inputCupom || inputCupom?.length == 0"
+                  (click)="AplicarDesconto()">Aplicar desconto</button> 
+                  <div>
+                    <small class="text-success font-weight-bold" *ngIf="descontoDoCupom > 0">Desconto aplicado</small>    
+                    <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>     
+                  </div>                                                                 
+              </div>                                       
+            </div>
+          </div>
+        </div>
+        <div class="card shadow border-0 my-3" *ngIf="pedido.PedidoItem.length > 0">
+          <div class="card-body py-4 text-right">
+            <div>
               Subtotal: {{ subTotal | currency: 'BRL' }}
-              <br>
+            </div>
+            <div>
               Desconto: {{ desconto | currency: 'BRL' }}
-              <br>              
+            </div>
+            <div *ngIf="descontoDoCupom > 0">
+              Desconto do cupom: {{ descontoDoCupom | currency: 'BRL' }}
+            </div>
+            <div>
               Total: {{ total | currency: 'BRL' }}
             </div>
           </div>
+        </div>
         <div class="row">
           <div class="col-md-4 text-left">
-            <a class="btn btn-block btn-success mb-3" [routerLink]="['/produtos']" routerLinkActive="router-link-active">Continuar comprando</a>
+            <a class="btn btn-block btn-success mb-3" [routerLink]="['/produtos']"
+              routerLinkActive="router-link-active">Continuar comprando</a>
           </div>
           <div class="offset-md-4"></div>
           <div class="col-md-4 text-right">

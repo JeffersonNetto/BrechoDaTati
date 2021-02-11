@@ -18,6 +18,7 @@ namespace API.Models
         public bool Ativo { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
+        public int Desconto { get; set; }
 
         public virtual ICollection<Pedido> Pedido { get; set; }
     }
