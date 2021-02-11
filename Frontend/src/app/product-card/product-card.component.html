@@ -1,47 +1,51 @@
-<div class="card shadow border-0 my-3">
+<div>
+  <div class="card shadow border-0 my-3">
     <div class="card-body py-4">
-        <div class="rounded-circle mb-4">
-            <img src="../../assets/img/theme/{{produto.ImagemPrincipal}}"
-                class="img-center img-fluid shadow shadow-lg--hover" />
-            <div class="overlay">
-                <a class="icon">
-                    <i class="fas fa-info-circle" title="Mais detalhes" style="cursor: pointer;"></i>
-                    <i class="fas fa-heart" title="Favoritar" style="cursor: pointer;"></i>
-                    <i class="fas fa-cart-plus" title="Adicionar ao carrinho" style="cursor: pointer;" (click)="Adicionar()"></i>                                            
-                    <i class="fas fa-share-alt" title="Compartilhar" style="cursor: pointer;"></i>
-                </a>
-            </div>
+      <div class="rounded-circle mb-4">
+        <img src="../../assets/img/theme/{{produto.ImagemPrincipal}}"
+          class="img-center img-fluid shadow shadow-lg--hover" />
+        <div class="overlay" *ngIf="produto.Estoque > 0">
+          <a class="icon">
+            <i class="fas fa-info-circle" title="Mais detalhes" style="cursor: pointer;"></i>
+            <i class="fas fa-heart" title="Favoritar" style="cursor: pointer;"></i>
+            <i class="fas fa-cart-plus" title="Adicionar ao carrinho" style="cursor: pointer;"
+              (click)="Adicionar()"></i>
+            <i class="fas fa-share-alt" title="Compartilhar" style="cursor: pointer;"></i>
+          </a>
         </div>
-        <h6 class="text-primary">{{produto.Nome}}</h6>
-        <p class="description mt-3">{{produto.Descricao}}</p>
-        <div>
-            <span class="badge badge-pill badge-primary">angular</span>
-            <span class="badge badge-pill badge-primary">ng-bootstrap</span>
-            <span class="badge badge-pill badge-primary">creative</span>
+      </div>
+      <h6 class="text-primary">{{produto.Nome}}</h6>
+      <p class="description mt-3">{{produto.Descricao}}</p>
+      <div>
+        <span class="badge badge-pill badge-primary">angular</span>
+        <span class="badge badge-pill badge-primary">ng-bootstrap</span>
+        <span class="badge badge-pill badge-primary">creative</span>
+      </div>
+      <div class="row mt-4 display-4 text-center" *ngIf="produto.Estoque > 0">
+        <div class="col">
+          <a [routerLink]="['/produto', produto.Slug]" [state]="{produto: produto}">
+            <i class="fas fa-info-circle text-warning" title="Mais detalhes"></i>
+          </a>
         </div>
-        <div class="row mt-4 display-4 text-center">
-            <div class="col">
-                <a [routerLink]="['/produto', produto.Slug]" [state]="{produto: produto}">
-                    <i class="fas fa-info-circle text-warning" title="Mais detalhes"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a style="cursor: pointer;">
-                    <i class="fas fa-heart text-danger" title="Favoritar"></i>
-                </a>
-            </div>
-            <div class="col">
-                <a style="cursor: pointer;">
-                    <i class="fas fa-cart-plus text-primary"
-                        title="Adicionar ao carrinho" (click)="Adicionar()"></i>
-                </a>
-            </div>      
-            <div class="col">
-                <a style="cursor: pointer;">
-                    <i class="fas fa-share-alt text-info"
-                        title="Compartilhar"></i>
-                </a>
-            </div>                           
+        <div class="col">
+          <a style="cursor: pointer;">
+            <i class="fas fa-heart text-danger" title="Favoritar"></i>
+          </a>
         </div>
+        <div class="col">
+          <a style="cursor: pointer;">
+            <i class="fas fa-cart-plus text-primary" title="Adicionar ao carrinho" (click)="Adicionar()"></i>
+          </a>
+        </div>
+        <div class="col">
+          <a style="cursor: pointer;">
+            <i class="fas fa-share-alt text-info" title="Compartilhar"></i>
+          </a>
+        </div>
+      </div>
+      <div *ngIf="produto.Estoque == 0" class="mt-4 display-4 text-center text-danger font-weight-bold">
+        Esgotado
+      </div>
     </div>
+  </div>
 </div>

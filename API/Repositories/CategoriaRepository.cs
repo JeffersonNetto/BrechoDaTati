@@ -21,7 +21,7 @@ namespace API.Repositories
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Id.Equals(id)) != null;
 
-        public async Task<IEnumerable<Categoria>> GetAll() =>
+        public async Task<List<Categoria>> GetAll() =>
             await _context.Categoria
             .AsNoTracking()
             .ToListAsync();

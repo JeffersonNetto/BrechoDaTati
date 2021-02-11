@@ -2,6 +2,7 @@
 using API.Repositories;
 using API.Uow;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
 
@@ -13,11 +14,13 @@ namespace API.Controllers
     {        
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IUnitOfWork _uow;
+        private readonly IMemoryCache _cache;
 
-        public PedidoController(IPedidoRepository pedidoRepository, IUnitOfWork wow)
+        public PedidoController(IPedidoRepository pedidoRepository, IUnitOfWork wow, IMemoryCache cache)
         {
             _pedidoRepository = pedidoRepository;
             _uow = wow;
+            _cache = cache;
         }
 
         // GET: api/Pedido
@@ -119,6 +122,6 @@ namespace API.Controllers
         }
 
         private async Task<bool> Exists(Guid id) =>
-            await _pedidoRepository.Exists(id);        
+            await _pedidoRepository.Exists(id);       
     }
 }

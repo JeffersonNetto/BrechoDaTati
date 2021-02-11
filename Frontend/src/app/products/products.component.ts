@@ -15,14 +15,24 @@ export class ProductsComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productService.Get().subscribe(
-      (success: Produto[]) => {        
-        this.produtos = success;
-      },
-      (err: any) => {
-        console.warn(err);
-      },
-      () => {}
-    );
+
+    this.produtos = this.productService.produtos.getValue();      
+
+    if(this.produtos.length == 0 ){
+      this.productService.Get().subscribe(
+        (success: Produto[]) => {       
+          this.productService.produtos.next(success); 
+  
+          this.productService.produtos.subscribe((success) => {
+            this.produtos = success;
+          })        
+        },
+        (err: any) => {
+          console.warn(err);
+        },
+        () => {
+        }
+      );
+    }   
   }
 }

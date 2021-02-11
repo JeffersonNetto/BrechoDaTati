@@ -21,7 +21,7 @@ namespace API.Repositories
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Id.Equals(id)) != null;
 
-        public async Task<IEnumerable<Tecido>> GetAll() =>
+        public async Task<List<Tecido>> GetAll() =>
             await _context.Tecido
             .AsNoTracking()
             .ToListAsync();

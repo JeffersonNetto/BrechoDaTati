@@ -25,7 +25,7 @@ namespace API.Repositories
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Id.Equals(id)) != null;
 
-        public async Task<IEnumerable<Pedido>> GetAll() =>
+        public async Task<List<Pedido>> GetAll() =>
             await _context.Pedido
             .Include(_ => _.Cliente)
             .Include(_ => _.Cupom)

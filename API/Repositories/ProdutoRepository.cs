@@ -9,6 +9,7 @@ namespace API.Repositories
     public interface IProdutoRepository : IRepositoryBase<Produto>
     {
         Task<Produto> GetBySlug(string slug);
+        Task<int> ObterEstoque<T>(T id);
     }
     public class ProdutoRepository : IProdutoRepository
     {
@@ -26,7 +27,7 @@ namespace API.Repositories
             .FirstOrDefaultAsync(_ => _.Id.Equals(id)) != null;
 
 
-        public async Task<IEnumerable<Produto>> GetAll() =>
+        public async Task<List<Produto>> GetAll() =>
              await
             _context.Produto
             .Include(_ => _.Marca)
@@ -69,12 +70,22 @@ namespace API.Repositories
             .FirstOrDefaultAsync(_ => _.Slug == slug);
 
         public void Remove(Produto obj) =>
-            _context.Produto.Remove(obj);        
+            _context.Produto.Remove(obj);
 
         public void Update(Produto obj)
         {
             _context.Entry(obj).State = EntityState.Modified;
             _context.Entry(obj).Property("DataCriacao").IsModified = false;
+        }
+
+        public async Task<int> ObterEstoque<T>(T id)
+        {
+            var produto = await
+            _context.Produto
+            .AsNoTracking()
+            .FirstOrDefaultAsync(_ => _.Id.Equals(id));
+
+            return produto == null ? 0 : produto.Estoque;
         }
     }
 }

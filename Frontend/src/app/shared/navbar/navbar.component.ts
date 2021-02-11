@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Location, PopStateEvent } from '@angular/common';
 import { CartService } from 'src/app/services/cart.service';
+import { first, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy, AfterContentInit {
   public isCollapsed = true;
   private lastPoppedUrl!: string;
   private yScrollStack: number[] = [];
@@ -19,6 +20,23 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private cartService: CartService
   ) {}
+
+  ngOnDestroy(){
+    //this.cartService.carrinho.unsubscribe();
+  }
+
+  ngAfterContentInit(){
+    let pedido = this.cartService.carrinho.getValue();
+
+    if(pedido?.PedidoItem?.length == 0){
+      let cart = localStorage.getItem('cart');
+
+      if(cart){
+        this.cartService.carrinho.next(JSON.parse(cart));
+      }
+    }
+
+  }
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
@@ -37,8 +55,10 @@ export class NavbarComponent implements OnInit {
       this.lastPoppedUrl = ev.url!;
     });
 
-    this.cartService.carrinho?.subscribe((success) => {
-      this.cartItems = success.PedidoItem?.length || 0;
+    this.cartService.carrinho?.subscribe((success) => {   
+            
+      this.cartItems = success.PedidoItem?.length || 0;      
+            
     });
   }
 

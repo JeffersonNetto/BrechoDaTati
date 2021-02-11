@@ -21,7 +21,7 @@ namespace API.Repositories
             .AsNoTracking()
             .FirstOrDefaultAsync(_ => _.Id.Equals(id)) != null;
 
-        public async Task<IEnumerable<Manga>> GetAll() =>
+        public async Task<List<Manga>> GetAll() =>
             await _context.Manga
             .AsNoTracking()
             .ToListAsync();
