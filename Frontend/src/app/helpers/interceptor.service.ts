@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie-service';
 import { Cliente } from '../models/Cliente';
 import { environment } from 'src/environments/environment';
-import { map, tap } from 'rxjs/operators';
+import { finalize, map, tap } from 'rxjs/operators';
 import { AccountService } from '../services/account.service';
 import {
   ActivatedRoute,
@@ -26,6 +26,7 @@ export class Interceptor implements HttpInterceptor {
   private token: string = '';
   private refreshToken: string = '';
   private clienteId: string | undefined;
+  private triedToRefreshToken: boolean = false;  
 
   constructor(
     private cookieService: CookieService,
@@ -77,48 +78,24 @@ export class Interceptor implements HttpInterceptor {
       });
     }    
 
-    // return next.handle(request).pipe(
-    //   tap(
-    //     () => {},
-    //     (err) => {
-    //       if (err.status == 401) {
-    //         console.log('401', err)
-    //         return this.accountService.RefreshToken(this.clienteId).pipe(
-    //           tap((val) => {
-    //             if (val.Dados) {
-    //               this.cookieService.set(
-    //                 'emb_user',
-    //                 JSON.stringify({
-    //                   Id: val.Dados.Id,
-    //                   Token: val.Dados.Token,
-    //                   RefreshToken: val.Dados.RefreshToken,
-    //                 })
-    //               );
-
-    //               this.router.navigateByUrl(request.url);
-    //             }
-    //           },
-    //           err => {
-    //             console.log('else', err)
-    //           })
-    //         ).subscribe();
-    //       } else {
-    //         return new Observable();
-    //       }
-    //     }
-    //   )
-    // );
+    if(this.triedToRefreshToken && request.url.includes('refreshtoken')){
+      this.triedToRefreshToken = false;
+      this.router.navigate(['login']);
+      return EMPTY;
+    } 
 
     return next.handle(request).pipe(
       tap(
         () => {},
-        (err) => {
+        (err) => {          
           if (err.status != 401) {
-            this.router.navigate['login'];
+            this.router.navigate(['login']);
             return EMPTY;
-          }
-
-          return this.accountService.RefreshToken(this.clienteId).subscribe(
+          } 
+                    
+          return this.accountService.RefreshToken(this.clienteId)
+          .pipe(finalize(() => this.triedToRefreshToken = true))
+          .subscribe(
             (success) => {
               if (success.Dados) {
                 this.cookieService.set(
@@ -135,8 +112,9 @@ export class Interceptor implements HttpInterceptor {
                 });                
               }
             },
-            (err) => {
-              this.router.navigate['login'];
+            (err) => {                  
+              this.router.navigate(['login']);
+              return EMPTY;
             }
           );
         }

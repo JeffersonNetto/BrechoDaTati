@@ -9,6 +9,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { ProfileComponent } from './profile/profile.component';
 import { CartComponent } from './cart/cart.component';
 import { LogoutComponent } from './logout/logout.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -26,6 +27,11 @@ const routes: Routes = [
     path: 'carrinho',
     component: CartComponent,
     //canActivate: [AuthGuardService],
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    canActivate: [AuthGuardService],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

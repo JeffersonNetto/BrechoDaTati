@@ -110,8 +110,7 @@
           </div>
           <div class="offset-md-4"></div>
           <div class="col-md-4 text-right">
-            <button class="btn btn-block btn-danger mb-3" *ngIf="pedido.PedidoItem.length > 0"
-              (click)="FinalizarCompra()">Finalizar compra</button>
+            <a [routerLink]="['/checkout']" routerLinkActive="router-link-active" class="btn btn-block btn-danger mb-3" *ngIf="pedido.PedidoItem.length > 0">Finalizar compra</a>
           </div>
         </div>
       </div>

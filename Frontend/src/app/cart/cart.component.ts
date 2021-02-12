@@ -44,13 +44,13 @@ export class CartComponent implements OnInit {
 
     if (this.pedido.PedidoItem[i].Quantidade > 1) {
       this.pedido.PedidoItem[i].Quantidade--;
-      this.pedido.PedidoItem[i].Produto.Estoque++;
+      // this.pedido.PedidoItem[i].Produto.Estoque++;
 
-      this.productService
-        .IncrementarEstoque(this.pedido.PedidoItem[i].ProdutoId)
-        .subscribe((success) => {
-          this.productService.produtos.next(success);
-        });
+      // this.productService
+      //   .IncrementarEstoque(this.pedido.PedidoItem[i].ProdutoId)
+      //   .subscribe((success) => {
+      //     this.productService.produtos.next(success);
+      //   });
     }
 
     this.cartService.carrinho.next(this.pedido);
@@ -65,15 +65,15 @@ export class CartComponent implements OnInit {
 
     if (item.Produto.Estoque > 0) {
       this.pedido.PedidoItem[i].Quantidade++;
-      this.pedido.PedidoItem[i].Produto.Estoque--;
+      //this.pedido.PedidoItem[i].Produto.Estoque--;
 
-      this.productService
-        .DecrementarEstoque(this.pedido.PedidoItem[i].ProdutoId)
-        .subscribe((success) => {
-          this.productService.produtos.next(success);
-        });
+      // this.productService
+      //   .DecrementarEstoque(this.pedido.PedidoItem[i].ProdutoId)
+      //   .subscribe((success) => {
+      //     this.productService.produtos.next(success);
+      //   });
 
-      this.pedido.PedidoItem[i].Produto.Estoque--;
+      //this.pedido.PedidoItem[i].Produto.Estoque--;
     }
 
     this.cartService.carrinho.next(this.pedido);

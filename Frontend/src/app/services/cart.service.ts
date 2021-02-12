@@ -39,16 +39,16 @@ export class CartService {
     let item = p.PedidoItem.find((_) => _.ProdutoId == pedidoItem.ProdutoId);
     
     if (item) {  
-      if(item.Produto.Estoque > 0) {
-        item.Produto.Estoque--;
-      }    
+      // if(item.Produto.Estoque > 0) {
+      //   item.Produto.Estoque--;
+      // }    
 
       item.Quantidade++;
     } else {
 
-      if(pedidoItem.Produto.Estoque > 0) {
-        pedidoItem.Produto.Estoque--;
-      }
+      // if(pedidoItem.Produto.Estoque > 0) {
+      //   pedidoItem.Produto.Estoque--;
+      // }
       
       p.PedidoItem.push(pedidoItem);
     }
@@ -57,11 +57,11 @@ export class CartService {
 
     localStorage.setItem('cart', JSON.stringify(p));
 
-    this.productService
-      .DecrementarEstoque(pedidoItem.ProdutoId)
-      .subscribe((success) => {
-        this.productService.produtos.next(success);
-      });
+    // this.productService
+    //   .DecrementarEstoque(pedidoItem.ProdutoId)
+    //   .subscribe((success) => {
+    //     this.productService.produtos.next(success);
+    //   });
   }
 
   Remover(pedidoItem: PedidoItem) {
@@ -71,11 +71,11 @@ export class CartService {
       (_) => _.ProdutoId == pedidoItem.ProdutoId
     );
 
-    this.productService
-      .IncrementarEstoque(pedido.PedidoItem[i].ProdutoId)
-      .subscribe((success) => {
-        this.productService.produtos.next(success);
-      });
+    // this.productService
+    //   .IncrementarEstoque(pedido.PedidoItem[i].ProdutoId)
+    //   .subscribe((success) => {
+    //     this.productService.produtos.next(success);
+    //   });
 
     pedido.PedidoItem.splice(i, 1);
 
