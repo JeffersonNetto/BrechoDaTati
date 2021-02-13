@@ -91,6 +91,9 @@ export class CheckoutComponent implements OnInit {
     .subscribe(
       success => {
         console.log(success)
+
+        localStorage.removeItem('cart');
+        
       },
       err => {
         console.warn(err)

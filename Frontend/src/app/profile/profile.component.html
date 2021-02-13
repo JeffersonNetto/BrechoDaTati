@@ -186,56 +186,60 @@
             </ng-template>
             <ng-template ngbTabContent>
 
-              <ngb-accordion [closeOthers]="true" *ngFor="let pedido of cliente.Pedido">
+              <div class="card bg-gradient-secondary shadow mb-3" *ngFor="let pedido of cliente.Pedido">
+                <div class="card-body">
+                  <ngb-accordion [closeOthers]="true" >
 
-                <!-- <ngb-panel *ngFor="let item of pedido.PedidoItem"
-                    title="Pedido: {{pedido.Id}} Data: {{pedido.DataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}" style="text-transform: none;">
-                    <ng-template ngbPanelContent>
-                      {{item.Quantidade}} {{item.ValorUnitarioPago | currency: 'BRL'}}
-                    </ng-template>
-                  </ngb-panel> -->
-
-                <ngb-panel>
-                  <ng-template ngbPanelHeader>
-
-                    <div class="row">
-                      <div class="display-5 m-0 col-md-6"><strong>Pedido:</strong> {{pedido.Id}}</div>
-                      <div class="display-5 m-0 col-md-4"><strong>Data:</strong>
-                        {{pedido.DataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
-                      <div class="col-md-2 text-right">
-                        <button style="text-transform: none !important;" ngbPanelToggle
-                          class="btn btn-sm btn-outline-primary">Detalhes <i class="fas fa-chevron-down"></i></button>
-                      </div>
-                    </div>
-
-                  </ng-template>
-                  <ng-template ngbPanelContent>
-                    <div *ngFor="let item of pedido.PedidoItem">
-                      <div class="row mb-3 text-center">
-                        <div class="col-md-4">
-                          <img src="../../assets/img/theme/{{item.Produto.ImagemPrincipal}}"
-                            class="img-fluid shadow shadow-lg--hover" />
-                        </div>
-                        <div class="col-md-8">
-                          <div>
-                            <span class="font-weight-bold text-warning">{{item.Produto.Nome}}</span>
-                          </div>
-                          <div>
-                            <span>{{item.Produto.Descricao}}</span>
-                          </div>
-                          <div class="mt-2">
-                            <span class="font-weight-bold">Quantidade:</span> {{item.Quantidade}}
-                          </div>
-                          <div>
-                            <span class="font-weight-bold">Valor:</span> {{item.ValorUnitarioPago | currency: 'BRL'}}
+                    <!-- <ngb-panel *ngFor="let item of pedido.PedidoItem"
+                        title="Pedido: {{pedido.Id}} Data: {{pedido.DataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}" style="text-transform: none;">
+                        <ng-template ngbPanelContent>
+                          {{item.Quantidade}} {{item.ValorUnitarioPago | currency: 'BRL'}}
+                        </ng-template>
+                      </ngb-panel> -->
+    
+                    <ngb-panel>
+                      <ng-template ngbPanelHeader>
+    
+                        <div class="row">
+                          <div class="display-5 m-0 col-md-6"><strong>Pedido:</strong> {{pedido.Id}}</div>
+                          <div class="display-5 m-0 col-md-4"><strong>Data:</strong>
+                            {{pedido.DataCriacao | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+                          <div class="col-md-2 text-right">
+                            <button style="text-transform: none !important;" ngbPanelToggle
+                              class="btn btn-sm btn-outline-primary">Detalhes <i class="fas fa-chevron-down"></i></button>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </ng-template>
-                </ngb-panel>
-
-              </ngb-accordion>
+    
+                      </ng-template>
+                      <ng-template ngbPanelContent>
+                        <div *ngFor="let item of pedido.PedidoItem">
+                          <div class="row mb-3 text-center">
+                            <div class="col-md-4">
+                              <img src="../../assets/img/theme/{{item.Produto.ImagemPrincipal}}"
+                                class="img-fluid shadow shadow-lg--hover" />
+                            </div>
+                            <div class="col-md-8">
+                              <div>
+                                <span class="font-weight-bold text-warning">{{item.Produto.Nome}}</span>
+                              </div>
+                              <div>
+                                <span>{{item.Produto.Descricao}}</span>
+                              </div>
+                              <div class="mt-2">
+                                <span class="font-weight-bold">Quantidade:</span> {{item.Quantidade}}
+                              </div>
+                              <div>
+                                <span class="font-weight-bold">Valor:</span> {{item.ValorUnitarioPago | currency: 'BRL'}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-panel>
+    
+                  </ngb-accordion>
+                </div></div>
+              
 
             </ng-template>
           </ngb-tab>
