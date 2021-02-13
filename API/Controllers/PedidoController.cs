@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Repositories;
 using API.Uow;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -15,12 +16,14 @@ namespace API.Controllers
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IUnitOfWork _uow;
         private readonly IMemoryCache _cache;
+        private readonly IProdutoRepository _produtoRepository;
 
-        public PedidoController(IPedidoRepository pedidoRepository, IUnitOfWork wow, IMemoryCache cache)
+        public PedidoController(IPedidoRepository pedidoRepository, IUnitOfWork wow, IMemoryCache cache, IProdutoRepository produtoRepository = null)
         {
             _pedidoRepository = pedidoRepository;
             _uow = wow;
             _cache = cache;
+            _produtoRepository = produtoRepository;
         }
 
         // GET: api/Pedido
@@ -87,11 +90,22 @@ namespace API.Controllers
         // POST: api/Pedido
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(Pedido pedido)
         {           
             try
             {
+                foreach (var item in pedido.PedidoItem)
+                {
+                    item.Produto.Estoque -= item.Quantidade;
+
+                    _produtoRepository.Update(item.Produto);
+
+                    item.Produto = null;
+                }
+                
                 await _pedidoRepository.Add(pedido);
+                
                 await _uow.Commit();
 
                 return CreatedAtAction("Post", await Get(pedido.Id));

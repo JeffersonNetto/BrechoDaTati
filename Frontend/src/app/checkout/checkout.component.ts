@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { finalize } from 'rxjs/operators';
 import { Cliente } from '../models/Cliente';
+import { ClienteEndereco } from '../models/ClienteEndereco';
+import { Pedido } from '../models/Pedido';
 import { CacheService } from '../services/cache.service';
+import { PedidoService } from '../services/pedido.service';
 
 @Component({
   selector: 'app-checkout',
@@ -14,10 +17,13 @@ export class CheckoutComponent implements OnInit {
   cliente: Cliente;
   enderecoAbrev: string = 'Selecione...'
   enderecoSelecionado: string = ''
+  showMessage: boolean = false
+  pedido: Pedido
 
   constructor(
     private cacheService: CacheService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private pedidoService: PedidoService
   ) {}
 
   ngOnInit(): void {
@@ -34,9 +40,18 @@ export class CheckoutComponent implements OnInit {
         },
         (err) => {}
       );
+      
+      let p = localStorage.getItem('cart')      
+
+      if(p) {
+        this.pedido = JSON.parse(p);
+      }
   }
 
-  Selecionar(endereco) {
+  Selecionar(endereco: ClienteEndereco) {
+
+    this.showMessage = false;
+
     this.enderecoSelecionado = `${endereco.Logradouro}`;
 
     if(endereco.Numero) {
@@ -59,5 +74,27 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.enderecoAbrev = this.enderecoSelecionado.substring(0,9) + '...'
+  }
+
+  ConfirmarPedido(){
+    this.showMessage = false;    
+
+    if(!this.enderecoSelecionado){
+      this.showMessage = true;
+      return;
+    }
+
+    this.loading = true;
+
+    this.pedidoService.ConfirmarPedido(this.pedido)
+    .pipe(finalize(() => this.loading = false))
+    .subscribe(
+      success => {
+        console.log(success)
+      },
+      err => {
+        console.warn(err)
+      }
+    )
   }
 }

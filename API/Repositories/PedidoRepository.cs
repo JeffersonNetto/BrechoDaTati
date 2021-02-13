@@ -17,8 +17,19 @@ namespace API.Repositories
         public PedidoRepository(Context context) =>
             _context = context;
 
-        public async Task Add(Pedido obj) =>
+        public async Task Add(Pedido obj)
+        {
+            //obj.Cliente = null;
+            //obj.Cupom = null;
+
+            //foreach(var item in obj.PedidoItem)
+            //{
+            //    item.Produto = null;               
+            //}
+
             await _context.Pedido.AddAsync(obj);
+        }
+            
 
         public async Task<bool> Exists<T>(T id) =>
             await _context.Pedido

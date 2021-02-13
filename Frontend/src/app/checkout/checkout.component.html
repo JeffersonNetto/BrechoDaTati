@@ -31,12 +31,14 @@
 
   <div class="container" *ngIf="!loading">
 
+    <div class="h2 text-warning font-weight-bold text-center">Checkout</div>
+
     <div class="card bg-gradient-secondary shadow mb-3">
       <div class="card-body">
         <div class="font-weight-bold h3">Endereço</div>
 
 
-        <div ngbDropdown class="d-inline-block mt-2 mb-5">
+        <div ngbDropdown class="d-inline-block mt-2 mb-4">
           <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{enderecoAbrev}}</button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <div *ngFor="let endereco of cliente?.ClienteEndereco; let i = index">
@@ -53,7 +55,25 @@
     <div class="card bg-gradient-secondary shadow mb-3">
       <div class="card-body">
         <div class="font-weight-bold h3">Pagamento</div>
+        <div>
+          <img src="../../assets/img/brand/picpay-logo.png" class="img-left img-fluid shadow shadow-lg--hover"
+            width="100" />
+        </div>
+        <div class="mt-2">
+          <small>Ao confirmar o pedido, será gerado um QR Code. Aponte a câmera do seu celular e realize o pagamento
+            utilizando o PicPay.</small>
+        </div>
       </div>
     </div>
+
+    <div class="alert alert-warning" role="alert" *ngIf="showMessage">
+      <strong>Atenção!</strong> Selecione o endereço para entrega.
+    </div>
+
+
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-danger" (click)="ConfirmarPedido()">Confirmar Pedido</button>
+    </div>
+
   </div>
 </main>
